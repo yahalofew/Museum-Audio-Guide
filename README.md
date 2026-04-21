@@ -125,8 +125,15 @@ URL: http://localhost/PROJECT/admin/admin.html
 - โปรเจกต์ใช้ `.gitignore` เพื่อป้องกันไม่ให้ไฟล์ `server_mysql.php` และ `.env` ที่มีข้อมูลจริงถูก commit ขึ้น repository
 
 ## 📸 Screenshots
-![หน้าหลัก]
-<img width="2551" height="1184" alt="image" src="https://github.com/user-attachments/assets/737eedd7-010d-4317-b714-76b21d01861e" />
-![Admin Dashboard]
-<img width="2559" height="1184" alt="image" src="https://github.com/user-attachments/assets/47404b52-0846-4a6b-9892-38a9562aba37" />
+**หน้าหลัก (Audio Player)**
+<img width="1170" height="3234" alt="localhost_PROJECT_index html(iPhone 12 Pro)" src="https://github.com/user-attachments/assets/98caf50c-6ce2-480c-b92e-2f78dd664622" />
+**กำลังเล่นเสียง**
+<img width="1170" height="3240" alt="localhost_PROJECT_index html(iPhone 12 Pro) (1)" src="https://github.com/user-attachments/assets/a4c2ee2e-094c-4cfa-a128-f7dd1f29dfdd" />
+**Admin — รายการทั้งหมด**
+<img width="2186" height="1187" alt="localhost_project_admin_viewall html (2)" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
+**Admin — เพิ่มเสียงใหม่**
+<img width="2186" height="1187" alt="localhost_project_admin_dashboard html (1)" src="https://github.com/user-attachments/assets/3f763124-1221-4664-81e8-f68aade921f6" />
+
+
+
 
