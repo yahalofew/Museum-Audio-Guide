@@ -1,10 +1,15 @@
 <?php
+session_start();
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header('Content-Type: application/json; charset=utf-8');
+    http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Unauthorized access"]);
+    exit;
+}
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
 include('../server_mysql.php');
-
-session_start();
 
 $songNumber = isset($_POST['songNumber']) ? $_POST['songNumber'] : '';
 $music_name = isset($_POST['music_name']) ? $_POST['music_name'] : '';
