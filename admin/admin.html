@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin </title>
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-wapper">
+        <div class="login-header">
+          <h2>Login PSUNHM Admin</h2>
+        </div>
+
+        <form id="loginForm">
+          <!-- Username -->
+          <div class="input-group">
+            <input type="text" id="username" required>
+            <label for="username">Username</label>
+            <div class="line"></div>
+          </div>
+          <!-- Password -->
+          <div class="input-group">
+            <input type="password" id="password" required>
+            <label for="password">Password</label>
+            <div class="line"></div>
+
+          </div>
+          <!-- ปุ่มตกลง -->
+          <button type="submit">Login</button>
+        </form>
+
+        <!-- <div id="errorMessage" style="display: none; color: red;">โปรดกรอกข้อมูลให้ครบถ้วน</div> -->
+
+      </div>
+    </div>
+    <script src="login.js"></script>
+    <!-- <script src="script.js"></script> -->
+  </body>
+</html>

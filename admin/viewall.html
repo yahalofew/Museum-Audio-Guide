@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ดูรายการเสียงทั้งหมด</title>
+        <link rel="stylesheet" href="viewAll.css">
+        <script src="https://kit.fontawesome.com/f5376a0119.js"
+            crossorigin="anonymous"></script>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+        <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+            src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    </head>
+    <body>
+        <section>
+            <div class="sidebar">
+                <nav>
+                    <div class="logo">
+                        <img src="../logo_MUSEUM.png" alt ;>
+                        <!-- <span>จัดการเสียง</span> -->
+                    </div>
+                    <div class="menu_list">
+                        <span>รายการ</span>
+                        <a href="dashboard.html" class="menu-item"> <i
+                                class="fa-solid fa-plus"></i>
+                            เพิ่มเสียงบรรยายใหม่</a>
+                        <a href="viewall.html" class="menu-item"> <i
+                                class="fa-solid fa-list-ul"></i>
+                            ดูรายการเสียงทั้งหมด </a>
+                    </div>
+                    <div class="menu_list">
+                        <span>ผู้ดูแลระบบ</span>
+                        <a href="add-admin.html" class="menu-item"><i
+                                class="fa-solid fa-user-plus"></i>
+                            เพิ่มผู้ดูแลระบบ</a>
+                    </div>
+                    <div class="menu_list">
+                        <a href="admin.html" class="menu-item"><i
+                                class="fa-solid fa-right-from-bracket"></i>
+                            ออกจากระบบ</a>
+                        <!-- <button id="logoutButton" onclick="logout()">ออกจากระบบ</button> -->
+                    </div>
+                </nav>
+            </div>
+            <div class="main-content">
+                <table id="myTable" class="display" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th>หมายเลขเสียง</th>
+                            <th>ชื่อเสียง</th>
+                            <th>รูปภาพประกอบ</th>
+                            <th>เสียงบรรยาย</th>
+                            <th>แก้ไข</th>
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <script src="viewAll.js"></script>
+    </body>
+</html>

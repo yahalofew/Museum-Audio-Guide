@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>เพิ่มเสียง</title>
+        <link rel="stylesheet" href="dashboard.css">
+        <script src="https://kit.fontawesome.com/f5376a0119.js"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <section>
+            <div class="sidebar">
+                <nav>
+                    <div class="logo">
+                        <img src="../logo_MUSEUM.png" alt ;>
+                        <!-- <span>จัดการเสียง</span> -->
+                    </div>
+                    <div class="menu_list">
+                        <span>รายการ</span>
+                        <a href="dashboard.html" class="menu-item"> <i
+                                class="fa-solid fa-plus"></i>
+                            เพิ่มเสียงบรรยายใหม่</a>
+                        <a href="viewall.html" class="menu-item"> <i
+                                class="fa-solid fa-list-ul"></i>
+                            ดูรายการเสียงทั้งหมด </a>
+                    </div>
+                    <div class="menu_list">
+                        <span>ผู้ดูแลระบบ</span>
+                        <a href="add-admin.html" class="menu-item"><i
+                                class="fa-solid fa-user-plus"></i>
+                            เพิ่มผู้ดูแลระบบ</a>
+                    </div>
+                    <div class="menu_list">
+                        <a href="admin.html" class="menu-item"><i
+                                class="fa-solid fa-right-from-bracket"></i>
+                            ออกจากระบบ</a>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="main-content">
+                <h1>เพิ่มเสียงบรรยาย</h1>
+                <form id="musicForm" method="post"
+                    enctype="multipart/form-data">
+                    <div>
+                        <label for="songNumber">หมายเลขเสียง :</label>
+                        <input type="text" id="songNumber" name="songNumber"
+                            inputmode="numeric" pattern="[0-9]*"
+                            title="โปรดป้อนเฉพาะตัวเลขเท่านั้น" required>
+                    </div>
+                    <div>
+                        <label for="songTitle">ชื่อเสียง :</label>
+                        <input type="text" id="songTitle" name="songTitle"
+                            title="โปรดระบุข้อมูลให้ครบ" required>
+                    </div>
+                    <div>
+                        <label for="songFile">ไฟล์เสียง :</label>
+                        <input type="file" id="songFile" name="songFile"
+                            accept="audio/*" required>
+                    </div>
+                    <div>
+                        <label for="songImage">รูปภาพประกอบ :</label>
+                        <input type="file" id="songImage" name="songImage"
+                            accept="image/*" required>
+                    </div>
+                    <div>
+                        <button type="submit">บันทึก</button>
+
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- แถบด้านซ้าย -->
+        <script src="dashboard.js"></script>
+        <!-- เพิ่มไฟล์ JavaScript เพื่อจัดการการส่งข้อมูล -->
+    </body>
+</html>

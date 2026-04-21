@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Admin</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://kit.fontawesome.com/f5376a0119.js"
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="add-admin.css">
+        <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    </head>
+    <body>
+        <section>
+            <div class="sidebar">
+                <nav>
+                    <div class="logo">
+                        <img src="../logo_MUSEUM.png" alt="">
+                    </div>
+                    <div class="menu_list">
+                        <span>รายการ</span>
+                        <a href="dashboard.html" class="menu-item"> <i
+                                class="fa-solid fa-plus"></i>
+                            เพิ่มเสียงบรรยายใหม่</a>
+                        <a href="viewall.html" class="menu-item"> <i
+                                class="fa-solid fa-list-ul"></i>
+                            ดูรายการเสียงทั้งหมด </a>
+                    </div>
+                    <div class="menu_list">
+                        <span>ผู้ดูแลระบบ</span>
+                        <a href="add-admin.html" class="menu-item active"><i
+                                class="fa-solid fa-user-plus"></i>
+                            เพิ่มผู้ดูแลระบบ</a>
+                    </div>
+                    <div class="menu_list">
+                        <a href="admin.html" class="menu-item"><i
+                                class="fa-solid fa-right-from-bracket"></i>
+                            ออกจากระบบ</a>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="main-content">
+                <div class="container">
+                    <div class="form-wrapper">
+                        <h1>เพิ่มผู้ดูแลระบบ</h1>
+                        <form id="addAdminForm" method="post">
+                            <div class="input-group">
+                                <label for="username">Username:</label>
+                                <input type="text" id="username" name="username"
+                                    required
+                                    placeholder="กรอกชื่อผู้ใช้ (4-32 ตัวอักษร)"
+                                    minlength="4" maxlength="32"
+                                    pattern="[a-zA-Z0-9_]+">
+                                <small>อนุญาตให้ใช้ a-z, A-Z, 0-9 และ _ เท่านั้น</small>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password"
+                                    required
+                                    placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
+                                    minlength="6">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="confirmPassword">ยันยัน Password:</label>
+                                <input type="password" id="confirmPassword"
+                                    name="confirmPassword" required
+                                    placeholder="กรอกรหัสผ่านอีกครั้ง">
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="btn-primary">เพิ่มผู้ดูแลระบบ</button>
+                                <a href="viewall.html" class="btn-secondary">กลับ
+                                    </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script src="add-admin.js"></script>
+    </body>
+</html>

@@ -1,0 +1,337 @@
+/* กำหนดทุกส่วนให้มีสไตล์นี้ */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Prompt:wght@200;300&family=Roboto:wght@100&display=swap');
+
+*{
+  margin: 0; 
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+  font-family: 'Prompt', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.content{
+  background: #e3edf7;
+  box-shadow: rgba(0,0,0,0.4) 0px 25px 50px, rgba(0,0,0,0.3) 0px 15px 20px;
+  border-radius: 30px;
+  padding: 35px 40px;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.material-symbols-rounded{
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* .top-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+} */
+
+/* .top-bar .material-symbols-rounded{
+  font-size: 24px;
+} */
+/* กล่องใส่รูป */
+.music-image{
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  padding: 8px;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+}
+/* ปรับรูป */
+.music-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+/* อันจัดตำแหน่ง */
+.image-wrapper{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.music-titles{
+  text-align: center;
+  margin: 20px 0px 30px;
+  padding: 15px;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  border-radius: 15px;
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+
+.music-titles .name{
+  font-weight: 700;
+  font-size: 22px;
+  color: #4d4d4d;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.music-titles .artist{
+  font-size: 32px;
+  font-weight: 800;
+  color: #667eea;
+  display: block;
+}
+
+/* หลอดเทา */
+.progress-details {
+  width: 90%;
+  margin: 0 auto 15px;
+  height: 8px;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+  padding: 2px;
+}
+
+.progress-details:hover {
+  height: 10px;
+}
+/* หลอดฟ้าตอนเล่นเสียง */
+.progress-bar{
+  width: 0%;
+  height: 100%;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  cursor: pointer;
+  position: relative;
+  transition: width 0.1s linear;
+} 
+
+/* ชี้ไปที่แถบเป็นหัวเลื่อนหลอดเพลง  abo ปรับตำแหน่งได้อิสระไม่ส่งผลกระทบกัย div อื่น*/
+.progress-bar span{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: inherit;
+  border: 1px solid #333;
+  transform: translateY(-25%);
+  right: -5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* เพิ่มเอฟเฟกต์แสงเมื่อชี้ไปที่ปุ่ม */
+  /* ตัวทำให้เกิดการเคลื่อนไหว ในที่นี้ใช้เป็นตัวเมื่อชี้ไปที่แถบการเล่นจะขึ้นมาเป็นสีแดงๆ opacity ทำให้ใส 0*/
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+/* ต่อจาก transition ที่ใส่pro-de ไปด้วยถ้าชี้ที่แถบก็ให้ขึ้นได้เลย*/
+
+.progress-details:hover .progress-bar span{
+  opacity: 1;
+}
+
+.time{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  color: #4d4d4d;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+
+.control-btn {
+  padding: 20px 0 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  width: 80%;
+  margin: 0 auto;
+}
+.control-btn > span:not(.play-pause span){
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #4d4d4d;
+  font-size: 24px;
+}
+
+.control-btn #prev, .control-btn #next{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: #4d4d4d;
+  font-size: 24px;
+}
+
+.control-btn #prev:hover, .control-btn #next:hover {
+  transform: scale(1.1);
+  box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff;
+}
+
+.control-btn #prev:active, .control-btn #next:active {
+  transform: scale(0.95);
+  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+}
+
+/* Play/Pause button styling */
+.play-pause {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-pause:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(102, 126, 234, 0.5);
+}
+
+.play-pause:active {
+  transform: scale(0.95);
+}
+
+.play-pause span {
+  color: white;
+  font-size: 36px;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+}
+
+.control-btn > span:hover:not(.play-pause span){
+  transform: scale(1.1);
+  box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff;
+}
+.control-btn > span:active:not(.play-pause span){
+  transform: scale(0.95);
+  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+}
+
+/* .rotate{
+  animation: rotation 8s infinite linear;
+}
+
+@keyframes rotation {
+    from{
+      transition: rotate(0deg);
+    }
+    to{
+      transform: rotate(359deg);
+    }
+} */
+
+.display-number{
+  padding: 15px;
+  width: 100%;
+  border: 2px solid #667eea;
+  border-radius: 12px;
+  font-size: 20px;
+  margin-bottom: 15px;
+  background: white;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.number-button,
+.display-number {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #e3edf7, #ffffff);
+  color: #4d4d4d;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+}
+
+.display-number {
+  grid-column: 1 / span 3;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.number-button[data-action="delete"] {
+  background: linear-gradient(145deg, #ffcccc, #ffe6e6);
+  color: #ff0000;
+}
+
+.number-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 7px 7px 15px #bebebe, -7px -7px 15px #ffffff;
+}
+
+.number-button:active {
+  transform: translateY(0);
+  box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+}
+
+/* สำหรับหน้าจอขนาดเล็ก เช่น โทรศัพท์มือถือ */
+
+
+

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขข้อมูล</title>
+    <link rel="stylesheet" href="dashboard_edit.css">
+    <script src="https://kit.fontawesome.com/f5376a0119.js"
+      crossorigin="anonymous"></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+      href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+
+  </head>
+
+  <body>
+    <section>
+      <div class="sidebar">
+        <nav>
+          <div class="logo">
+            <img src="../logo_MUSEUM.png" alt ;>
+            <!-- <span>จัดการเสียง</span> -->
+          </div>
+          <div class="menu_list">
+            <span>รายการ</span>
+            <a href="dashboard.html" class="menu-item"> <i
+                class="fa-solid fa-plus"></i>
+              เพิ่มเสียงบรรยายใหม่</a>
+            <a href="viewall.html" class="menu-item"> <i
+                class="fa-solid fa-list-ul"></i>
+              ดูรายการเสียงทั้งหมด </a>
+          </div>
+          <div class="menu_list">
+            <span>ผู้ดูแลระบบ</span>
+            <a href="add-admin.html" class="menu-item"><i
+                class="fa-solid fa-user-plus"></i> เพิ่มผู้ดูแลระบบ</a>
+          </div>
+          <div class="menu_list">
+            <a href="admin.html" class="menu-item"><i
+                class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ</a>
+          </div>
+        </nav>
+      </div>
+      <div class="content">
+        <div class="image-wrapper">
+          <div class="music-image">
+            <img src id="imgElement" alt ;>
+          </div>
+        </div>
+        <div class="control-btn">
+          <audio id="myAudio" controls>
+            <source src>
+            เบราว์เซอร์นี้ไม่รองรับองค์ประกอบไฟล์เสียง
+          </audio>
+        </div>
+      </div>
+      <div class="main-content">
+        <form id="editMusicForm" method="post" enctype="multipart/form-data">
+          <h1>Edit Music</h1>
+          <div>
+            <label for="songNumber">หมายเลขเพลง:</label>
+            <input type="text" id="songNumber" name="songNumber"
+              inputmode="numeric" pattern="[0-9]*"
+              title="โปรดป้อนเฉพาะตัวเลขเท่านั้น">
+          </div>
+          <div>
+            <label for="SongTitle">ชื่อเพลง:</label>
+            <input type="text" id="SongTitle" name="editSongTitle">
+          </div>
+          <div>
+            <label for="songFile">ไฟล์เสียง:</label>
+            <input type="file" id="songFile" name="songFile" accept="audio/*">
+          </div>
+          <div>
+            <label for="songImage">รูปภาพประกอบ:</label>
+            <input type="file" id="songImage" name="songImage" accept="image/*">
+          </div>
+          <button type="submit">บันทึกการแก้ไข</button>
+        </form>
+        <!-- Content goes here -->
+      </div>
+    </section>
+
+    <!-- <audio src="music/1/music1.mp3" class="main-song" id="audioElement"></audio> -->
+
+    <script src="dashboard_edit.js"></script>
+
+  </body>
+
+</html>

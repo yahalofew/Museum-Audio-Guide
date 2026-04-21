@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap');
+
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+} */
+
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+.sidebar {
+    /* กำหนดให้ sidebar fixed ไว้ ไม่ว่าจะเลื่อนหน้าเว็บไปที่ไหนก็ตาม */
+    background: rgb(233, 233, 255);
+    /* ถือตำแหน่งเริ่มต้นเหมือนกับตำแหน่งเดิม  */
+    position: relative;
+    /* display: flex; */
+    width: 290px;
+    /* สูงให้เต็มหน้า */
+    height: 100vh;
+    /* background-color: #333; */
+    /* padding: 1rem; */
+    transition: 0.2s linear;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+nav {
+    /* position: relative; */
+    padding: 1rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    /* padding: 0.5rem; */
+    /* background: #fff; */
+    overflow: hidden;
+    /* border-radius: 10px; */
+    /* box-shadow: 5px 5px 30px rgb(0, 0, 0 , 0.2); */
+}
+
+.logo img {
+
+    width: 100%;
+    height: 130px;
+    border-radius: 10px;
+}
+
+/* ของฝังซ้าย */
+.menu_list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 30px rgb(0, 0, 0, 0.2);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem;
+    color: rgb(39, 39, 39);
+    font-weight: 500;
+    overflow: hidden;
+    /* ไม่ให้มีการเพิ่มขีดเส้นใต้ข้อความในเมนู */
+    text-decoration: none;
+    /* กำหนดให้เมนูเป็นบล็อก (block) ที่จะมีความกว้างเท่ากับพื้นที่ใน sidebar และขึ้นบรรทัดใหม่แต่ละเมนู */
+    display: block;
+}
+
+.menu_list i {
+    font-size: 1.2rem;
+    color: rgb(104, 103, 103);
+    margin: 0 1.8rem 0 0.3rem;
+}
+
+.menu_list span {
+    color: rgb(104, 103, 103);
+    font-size: 12px;
+    padding: 0.6rem 0.6rem 0.3rem 0.8rem;
+}
+
+.menu-logout {
+    position: absolute;
+}
+
+/* ซ้าย เมื่อเล้งไปจะเปลี่ยนสี */
+nav a:hover {
+    border-radius: 10px;
+    background: rgb(238, 237, 237);
+}
+
+section {
+    display: flex;
+    gap: 20px;
+}
+
+/* .container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+/* } */
+
+.main-content {
+    /* width: 100%; */
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 20px 30px 20px 0px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 34px;
+    margin: 50px 0px 0px 0px;
+    padding-bottom: 20px;
+    text-align: center;
+    /* margin-top: 20px; */
+}
+
+#musicForm {
+    /* width: 100%; */
+    margin: 20px auto;
+    /* margin: 0px 20px 0px 20px; */
+    padding: 20px;
+    /* background-color: #fff; */
+    /* border-radius: 8px; */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#musicForm div {
+    margin-bottom: 15px;
+
+}
+
+#musicForm button {
+    margin-top: 10px;
+    /* กำหนดระยะห่างด้านบนของปุ่ม */
+    align-self: center;
+    /* จัดให้ปุ่มอยู่กึ่งกลางตามแนวนอน */
+}
+
+label {
+    font-size: 24px;
+    display: block;
+    /* font-weight: bold; */
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="file"] {
+    width: 420px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 18px;
+}
+
+button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* font-size: ; */
+    font-size: 18px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}

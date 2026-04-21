@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+/* ของฝังซ้าย */
+.sidebar {
+    /* กำหนดให้ sidebar fixed ไว้ ไม่ว่าจะเลื่อนหน้าเว็บไปที่ไหนก็ตาม */
+    background: rgb(233, 233, 255);
+    position: fixed;
+    width: 295px;
+    /* สูงให้เต็มหน้า */
+    height: 100vh;
+    /* background-color: #333; */
+    /* padding: 1rem; */
+    transition: 0.2s linear;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    margin-right: 20px;
+    /* เพิ่มช่องว่างด้านขวาของ sidebar */
+
+}
+
+nav {
+    position: relative;
+    padding: 1rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    /* padding: 0.5rem; */
+    /* background: #fff; */
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 5px 5px 30px rgb(0, 0, 0, 0.2);
+}
+
+.logo img {
+    width: 100%;
+    height: 130px;
+    border-radius: 10px;
+}
+
+/* ของฝังซ้าย */
+.menu_list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 5px 5px 30px rgb(0, 0, 0, 0.2);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem;
+    color: rgb(39, 39, 39);
+    font-weight: 500;
+    overflow: hidden;
+    /* ไม่ให้มีการเพิ่มขีดเส้นใต้ข้อความในเมนู */
+    text-decoration: none;
+    /* กำหนดให้เมนูเป็นบล็อก (block) ที่จะมีความกว้างเท่ากับพื้นที่ใน sidebar และขึ้นบรรทัดใหม่แต่ละเมนู */
+    display: block;
+}
+
+.menu_list i {
+    font-size: 1.2rem;
+    color: rgb(104, 103, 103);
+    margin: 0 1.8rem 0 0.3rem;
+}
+
+.menu_list span {
+    color: rgb(104, 103, 103);
+    font-size: 12px;
+    padding: 0.6rem 0.6rem 0.3rem 0.8rem;
+}
+
+.menu-logout {
+    position: absolute;
+}
+
+/* ซ้าย เมื่อเล้งไปจะเปลี่ยนสี */
+nav a:hover {
+    border-radius: 10px;
+    background: rgb(238, 237, 237);
+}
+
+section {
+    display: flex;
+    gap: 20px;
+    /* align-items: start;
+    justify-content: left; */
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    /* margin-right: 20px; */
+    margin-left: 315px;
+    /* 295px (ความกว้างของ sidebar) + 20px (ช่องว่างระหว่าง sidebar กับ main-content) */
+
+    /* justify-content: left; */
+    background-color: #fff;
+    border-radius: 15px;
+    /* align-items: start; */
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/* th { */
+/* width: 16.6%;  */
+/* คำนวณเพื่อให้มี 6 คอลัมน์ 1 รายการในแถวที่แสดง (100% / 6) */
+/* padding: 8px;  */
+/* ให้มีพื้นที่ขอบรอบข้อความ */
+/* } */
+td {
+    text-align: center;
+    /* จัดให้ข้อความอยู่ตรงกลางในทุก ๆ คอลัมน์ */
+}
+
+/* ขวา */
+/* .main-content { */
+/* display: flex;
+    position: relative; */
+/* justify-content: center;
+    align-items: center; */
+/* margin-left: 250px;
+    padding: 20px;
+} */
+
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+i {
+    color: white;
+}
+
+button {
+    border: none;
+    padding: 10px;
+    margin: 4px 2px;
+}
+
+.btn-edit {
+    background-color: rgb(153, 255, 255);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-delete {
+    background-color: red;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* หน้าpopup */
+
+/* .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+    text-align: center;
+    display: none;
+} */
+
+/* Close button style */
+/* .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+} */
+
+/* .close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+} */
