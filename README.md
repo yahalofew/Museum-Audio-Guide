@@ -123,3 +123,10 @@ URL: http://localhost/PROJECT/admin/admin.html
 ## 📝 หมายเหตุ
 
 - โปรเจกต์ใช้ `.gitignore` เพื่อป้องกันไม่ให้ไฟล์ `server_mysql.php` และ `.env` ที่มีข้อมูลจริงถูก commit ขึ้น repository
+
+## 📸 Screenshots
+![หน้าหลัก]
+<img width="2551" height="1184" alt="image" src="https://github.com/user-attachments/assets/737eedd7-010d-4317-b714-76b21d01861e" />
+![Admin Dashboard]
+<img width="2559" height="1184" alt="image" src="https://github.com/user-attachments/assets/47404b52-0846-4a6b-9892-38a9562aba37" />
+
