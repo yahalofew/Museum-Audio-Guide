@@ -4,14 +4,14 @@
 
 ระบบเว็บแอปพลิเคชันนำชมพิพิธภัณฑ์ด้วยเสียง (Audio Guide) ผ่านการสแกน QR Code เพื่อเพิ่มประสบการณ์การเรียนรู้ที่ทันสมัยและสะดวกสบายให้กับผู้เข้าชม โดยโปรเจกต์นี้พัฒนาขึ้นเพื่อใช้งานจริง ณ พิพิธภัณฑสถานธรรมชาติวิทยา 50 พรรษา สยามบรมราชกุมารี
 
-## 🌟 จุดเด่นของโปรเจกต์ (Key Features)
+## 🌟 จุดเด่นของโปรเจกต์
 - **Responsive Design:** รองรับการใช้งานสมบูรณ์แบบบนสมาร์ทโฟนและแท็บเล็ต
 - **Dynamic Content:** ข้อมูลวัตถุจัดแสดงและไฟล์เสียงบรรยายจะถูกดึงมาจากระบบฐานข้อมูล
 - **Admin Dashboard:** ระบบหลังบ้านสำหรับจัดการ (CRUD) ข้อมูลวัตถุจัดแสดง รูปภาพ และไฟล์เสียง
 - **Audio Playlist:** ระบบเล่นเสียงที่ใช้งานง่าย พร้อมฟีเจอร์จัดรายการเสียงบรรยายตามโซนต่างๆ
 - **Secure Authentication:** ระบบล็อกอินสำหรับผู้ดูแลระบบเพื่อความปลอดภัยในการจัดการข้อมูล
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+## 🚀 เทคโนโลยีที่ใช้
 - **Front-end:** HTML5, CSS3, JavaScript (Vanilla JS & jQuery)
 - **Back-end:** PHP (Native)
 - **Database:** MySQL / MariaDB
@@ -24,7 +24,26 @@
 - `/music`: โฟลเดอร์เก็บไฟล์เสียงบรรยาย (.mp3)
 - `/js`: สคริปต์สำหรับการควบคุมการเล่นเสียงและ UI Interactivity
 
-## ⚙️ การติดตั้งและใช้งาน (Installation)
+## 🛠️ วิธีการติดตั้งและรันโปรเจกต์
 1. Clone โปรเจกต์ไปยังเครื่องของคุณ:
    ```bash
    git clone [https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git](https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git)
+2. นำไฟลเดอร์โปรเจกต์ไปวางใน htdocs (สำหรับ XAMPP)
+3. นำเข้าฐานข้อมูล (Database Import):
+- สร้างฐานข้อมูลใหม่ใน phpMyAdmin ชื่อ `sound_tour`
+- Import ไฟล์ `sound_tour.sql` เข้าไป
+4. ตั้งค่าการเชื่อมต่อฐานข้อมูล
+- คัดลอกไฟล์ `.env.example` แล้วเปลี่ยนชื่อเป็น `.env`
+- คัดลอกไฟล์ `server_mysql.example.php` แล้วเปลี่ยนชื่อเป็น `server_mysql.php`
+- แก้ไขค่าในไฟล์ `.env` ให้ตรงกับ Environment ในเครื่องของคุณ (Host, User, Password)
+- ตรวจสอบไฟล์ `server_mysql.php` เพื่อตั้งค่า Host, Username และ Password ให้ตรงกับเครื่องของคุณ
+5. เปิดเบราว์เซอร์แล้วเข้าไปที่
+  `http://localhost/project/index.html`
+## 🔑 ข้อมูลการเข้าใช้งาน (Credentials)
+- Admin URL: `http://localhost/project/admin/admin.html`
+- Username: `admin`
+- Password: `admin123`
+## 📝 หมายเหตุ
+- โปรเจกต์นี้มีการใช้ .gitignore เพื่อป้องกันไม่ให้ข้อมูลการเชื่อมต่อฐานข้อมูลจริงรั่วไหลสู่สาธารณะ
+- ชื่อไฟล์ Multimedia บางส่วนยังคงใช้ภาษาไทยตามข้อกำหนดเดิมขององค์กรช่วงฝึกงาน เพื่อให้สอดคล้องกับฐานข้อมูลเดิม
+  
