@@ -126,9 +126,9 @@ URL: http://localhost/PROJECT/admin/admin.html
 
 ## 📸 Screenshots
 **หน้าหลัก (Audio Player)**
-<img width="1170" height="3234" alt="localhost_PROJECT_index html(iPhone 12 Pro)" src="https://github.com/user-attachments/assets/98caf50c-6ce2-480c-b92e-2f78dd664622" />
+<img width="519" height="1056" alt="image" src="https://github.com/user-attachments/assets/fce0a216-be77-4108-9e7b-a96b23fb0fc0" />
 **กำลังเล่นเสียง**
-<img width="1170" height="3240" alt="localhost_PROJECT_index html(iPhone 12 Pro) (1)" src="https://github.com/user-attachments/assets/a4c2ee2e-094c-4cfa-a128-f7dd1f29dfdd" />
+<img width="522" height="1050" alt="image" src="https://github.com/user-attachments/assets/337301fd-1fbe-4f19-9dd8-6be776a58231" />
 **Admin — รายการทั้งหมด**
 <img width="2186" height="1187" alt="localhost_project_admin_viewall html (2)" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
 **Admin — เพิ่มเสียงใหม่**
