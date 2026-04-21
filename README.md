@@ -95,9 +95,11 @@ http://localhost/PROJECT/index.html
 ```
 URL: http://localhost/PROJECT/admin/admin.html
 ```
-
-> ⚠️ **หมายเหตุ:** Credentials สำหรับ local development อยู่ในไฟล์ `sound_tour.sql` (ข้อมูล seed)  
-> กรุณาเปลี่ยน password ทันทีหลังติดตั้งบน production server
+- Username: `admin`
+- Password: `admin123`
+  
+> ⚠️ Credentials นี้สำหรับ local development เท่านั้น  
+> หากนำไปใช้งานจริงให้เปลี่ยน password ทันที
 
 ---
 
@@ -105,7 +107,6 @@ URL: http://localhost/PROJECT/admin/admin.html
 
 สิ่งที่รับรู้และจะปรับปรุงหากพัฒนาต่อ:
 
-- **Auth guard ไม่ครบทุก API** — บาง endpoint เช่น `edit_folder.php` และ `edit_update-img.php` ยังขาดการตรวจสอบ session ควรเพิ่ม middleware กลาง
 - **ไม่มี input validation สำหรับ file upload** — ควรตรวจสอบ MIME type และขนาดไฟล์ฝั่ง server
 - **ชื่อไฟล์ภาษาไทย** — ไฟล์มัลติมีเดียบางส่วนใช้ภาษาไทยตามข้อกำหนดเดิมขององค์กร เพื่อให้สอดคล้องกับฐานข้อมูลที่มีอยู่
 
@@ -113,7 +114,6 @@ URL: http://localhost/PROJECT/admin/admin.html
 
 ## 💡 สิ่งที่จะพัฒนาต่อ
 
-- [ ] เพิ่ม Auth middleware กลางสำหรับทุก API ที่ต้องการ session
 - [ ] รองรับหลายภาษา (ไทย / อังกฤษ)
 - [ ] เพิ่มระบบ Zone/Category สำหรับจัดกลุ่มวัตถุจัดแสดง
 - [ ] ย้าย API ไปใช้ framework เช่น Laravel หรือ Slim สำหรับ scalability
