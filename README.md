@@ -127,10 +127,13 @@ URL: http://localhost/PROJECT/admin/admin.html
 ## 📸 Screenshots
 **หน้าหลัก (Audio Player)**
 <img width="519" height="1056" alt="image" src="https://github.com/user-attachments/assets/fce0a216-be77-4108-9e7b-a96b23fb0fc0" />
+
 **กำลังเล่นเสียง**
 <img width="522" height="1050" alt="image" src="https://github.com/user-attachments/assets/337301fd-1fbe-4f19-9dd8-6be776a58231" />
+
 **Admin — รายการทั้งหมด**
 <img width="2186" height="1187" alt="localhost_project_admin_viewall html (2)" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
+
 **Admin — เพิ่มเสียงใหม่**
 <img width="2186" height="1187" alt="localhost_project_admin_dashboard html (1)" src="https://github.com/user-attachments/assets/3f763124-1221-4664-81e8-f68aade921f6" />
 
