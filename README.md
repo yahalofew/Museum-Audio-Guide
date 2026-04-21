@@ -27,7 +27,7 @@
 ## 🛠️ วิธีการติดตั้งและรันโปรเจกต์
 1. Clone โปรเจกต์ไปยังเครื่องของคุณ:
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git](https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git)
+   git clone https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git
 2. นำไฟลเดอร์โปรเจกต์ไปวางใน htdocs (สำหรับ XAMPP)
 3. นำเข้าฐานข้อมูล (Database Import):
 - สร้างฐานข้อมูลใหม่ใน phpMyAdmin ชื่อ `sound_tour`
