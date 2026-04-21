@@ -126,16 +126,20 @@ URL: http://localhost/PROJECT/admin/admin.html
 
 ## 📸 Screenshots
 **หน้าหลัก (Audio Player)**
-<img width="519" alt="image" src="https://github.com/user-attachments/assets/fce0a216-be77-4108-9e7b-a96b23fb0fc0" />
+
+<img width="520" alt="audio player" src="https://github.com/user-attachments/assets/fce0a216-be77-4108-9e7b-a96b23fb0fc0" />
 
 **กำลังเล่นเสียง**
-<img width="522" alt="image" src="https://github.com/user-attachments/assets/337301fd-1fbe-4f19-9dd8-6be776a58231" />
+
+<img width="520" alt="play sound" src="https://github.com/user-attachments/assets/337301fd-1fbe-4f19-9dd8-6be776a58231" />
 
 **Admin — รายการทั้งหมด**
-<img width="800" alt="localhost_project_admin_viewall html (2)" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
+
+<img width="800" alt="Admin viewall" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
 
 **Admin — เพิ่มเสียงใหม่**
-<img width="800" alt="localhost_project_admin_dashboard html (1)" src="https://github.com/user-attachments/assets/3f763124-1221-4664-81e8-f68aade921f6" />
+
+<img width="800" alt="Admin add sound" src="https://github.com/user-attachments/assets/3f763124-1221-4664-81e8-f68aade921f6" />
 
 
 
