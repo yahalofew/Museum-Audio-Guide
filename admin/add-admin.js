@@ -45,7 +45,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const text = await response.text();
             console.log("Response text:", text);
 
-            const data = await response.json();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (parseError) {
+                console.error("Invalid JSON response:", text);
+                throw parseError;
+            }
 
             if (response.ok && data.success) {
                 Swal.fire({
