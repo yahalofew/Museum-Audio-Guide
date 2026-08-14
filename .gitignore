@@ -1,3 +1,4 @@
 .codegpt
 server_mysql.php
 .env
+.agents/
