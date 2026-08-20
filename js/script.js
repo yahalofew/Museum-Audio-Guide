@@ -172,6 +172,9 @@ playBtn.addEventListener("click", () => {
 
 //เล่นเสียง play -> paused
 function playSong() {
+  if (!Audio.getAttribute("src")) {
+    return;
+  }
 
   content.classList.add("paused");
   playBtnIcon.innerHTML = "pause";
