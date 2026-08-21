@@ -4,7 +4,6 @@ require_admin_auth();
 require_once __DIR__ . '/upload_validation.php';
 
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
 include('../server_mysql.php');
 try {
     $songNumber = validate_music_number(isset($_POST['songNumber']) ? $_POST['songNumber'] : '');

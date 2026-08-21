@@ -5,7 +5,6 @@ require_once __DIR__ . '/upload_validation.php';
 
 // โค้ดเดิมต่อจากนี้...
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *');
 
 try {
     $songNumber = validate_music_number(isset($_POST['songNumber']) ? $_POST['songNumber'] : '');

@@ -1,5 +1,4 @@
 <?php
-header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=utf-8");
 
 // ตรวจสอบ HTTP Method: API นี้ไว้สำหรับดึงข้อมูล ควรอนุญาตแค่ GET เท่านั้น
