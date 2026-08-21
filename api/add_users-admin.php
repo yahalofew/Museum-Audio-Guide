@@ -2,28 +2,19 @@
 require_once __DIR__ . '/admin_auth.php';
 require_admin_auth();
 
-header("Content-Type: application/json; charset=utf-8");
+initialize_json_response();
 // เชื่อมต่อกับฐานข้อมูล MySQL
 include('../server_mysql.php');
 
 
-function send_json($response, $code = 200)
-{
-    http_response_code($code);
-    echo json_encode($response);
-    exit;
-}
-
-if ($_SERVER["REQUEST_METHOD"] !== 'POST') {
-    send_json([
-        "success" => false,
-        "message" => "วิธีการไม่ได้รับอนุญาต"
-    ], 405);
-}
+require_request_method('POST', [
+    "success" => false,
+    "message" => "วิธีการไม่ได้รับอนุญาต"
+]);
 
 // ตรวจสอบว่ามีข้อมูล username และ password ที่ส่งมาหรือไม่
 if (!isset($_POST['username']) || !isset($_POST['password'])) {
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "กรุณากรอกชื่อผู้ใช้และรหัสผ่าน"
     ], 400);
@@ -35,13 +26,13 @@ $password = $_POST['password'];
 
 // ตรวจสอบความยาวและรูปแบบ username/password
 if (strlen($username) < 4 || strlen($username) > 32 || !preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "ชื่อผู้ใช้ต้องมี 4-32 ตัวอักษรและใช้ได้เฉพาะ a-z, A-Z, 0-9, _"
     ], 400);
 }
 if (strlen($password) < 6) {
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร"
     ], 400);
@@ -56,7 +47,7 @@ $checkStmt->store_result();
 if ($checkStmt->num_rows > 0) {
     $checkStmt->close();
     $conn->close();
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "ชื่อผู้ใช้นี้มีอยู่แล้ว กรุณาเลือกชื่ออื่น"
     ], 409);
@@ -72,7 +63,7 @@ $stmt = $conn->prepare($sql);
 if (!$stmt) {
     error_log("SQL Error: " . $conn->error);
     $conn->close();
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "เกิดข้อผิดพลาดในการเตรียมคำสั่ง SQL"
     ], 500);
@@ -86,12 +77,12 @@ if ($stmt->execute()) {
     ];
     $stmt->close();
     $conn->close();
-    send_json($response, 200);
+    json_response_and_exit($response, 200);
 } else {
     error_log("SQL Execute Error: " . $stmt->error);
     $stmt->close();
     $conn->close();
-    send_json([
+    json_response_and_exit([
         "success" => false,
         "message" => "เกิดข้อผิดพลาดในการบันทึกข้อมูลผู้ใช้งาน"
     ], 500);

@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/admin_session.php';
+require_once __DIR__ . '/api_response.php';
 start_admin_session();
 
 // Security Headers
-header("Content-Type: application/json; charset=utf-8");
+initialize_json_response();
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: DENY");
 

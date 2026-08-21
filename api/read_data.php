@@ -1,6 +1,6 @@
 <?php
-
-header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/api_response.php';
+initialize_json_response();
 
 require_once __DIR__ . '/media_integrity.php';
 include('../server_mysql.php');

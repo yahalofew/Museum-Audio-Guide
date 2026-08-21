@@ -3,8 +3,9 @@ require_once __DIR__ . '/admin_auth.php';
 require_admin_auth();
 require_once __DIR__ . '/upload_validation.php';
 require_once __DIR__ . '/music_number_integrity.php';
+require_once __DIR__ . '/api_response.php';
 
-header('Content-Type: application/json; charset=utf-8');
+initialize_json_response();
 include('../server_mysql.php');
 $storedUploads = [];
 $transactionStarted = false;
