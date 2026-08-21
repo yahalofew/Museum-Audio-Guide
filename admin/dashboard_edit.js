@@ -20,15 +20,22 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const musicData = await response.json();
-            console.log(musicData.result);
-            console.log('ID', musicData.results[0].music_id);
-            id = musicData.results[0].music_id;
+            console.log(musicData && musicData.result);
 
-            if (musicData.result && musicData.results.length > 0) {
-                const songTitle = musicData.results[0].music_name;
-                const songNumber = musicData.results[0].music_number;
-                const songImage = musicData.results[0].music_img;
-                const songAudio = musicData.results[0].music_audio;
+            if (musicData
+                && musicData.result
+                && Array.isArray(musicData.results)
+                && musicData.results.length > 0
+                && musicData.results[0]
+                && typeof musicData.results[0] === 'object') {
+                const music = musicData.results[0];
+                console.log('ID', music.music_id);
+                id = music.music_id;
+
+                const songTitle = music.music_name;
+                const songNumber = music.music_number;
+                const songImage = music.music_img;
+                const songAudio = music.music_audio;
                 // ตั้งค่าข้อมูลลงใน input field SongTitle
                 document.getElementById("SongTitle").value = songTitle;
                 document.getElementById("songNumber").value = songNumber;
@@ -194,6 +201,16 @@ async function checkNumber(songNumber, musics) {
     console.log("เลขเก่าเรียกข้อมูลมา", musics.data[0].music_number);
     // console.log(number_check.result)
     console.log("ข้อมูล: ", number_check);
+
+    if (number_check && number_check.result === false) {
+        console.log("ไม่มีหมายเลขอื่นสำหรับตรวจสอบ");
+        return false;
+    }
+
+    if (!Array.isArray(number_check.results)) {
+        throw new Error("Invalid duplicate check response");
+    }
+
     console.log("ข้อมูล: ", number_check.results[0]);
     let foundDuplicate = false;
 
