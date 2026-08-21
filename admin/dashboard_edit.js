@@ -251,9 +251,9 @@ async function updateAudio(songNumber, musics, songFileInput) {
         });
         const edit_succeed_music = await response_music.json();
 
-        if (edit_succeed_music.result) {
+        if (edit_succeed_music.result && typeof edit_succeed_music.filename === "string") {
             console.log(edit_succeed_music.message);
-            return music_audio.name;
+            return edit_succeed_music.filename;
         } else {
             console.log("ผิดพลาดในการแก้ไขข้อมูล" + edit_succeed_music.message);
             throw new Error("เกิดข้อผิดพลาดในการแก้ไขข้อมูล", edit_succeed_music.message);

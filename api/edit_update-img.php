@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/admin_auth.php';
 require_admin_auth();
+require_once __DIR__ . '/upload_validation.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
@@ -18,29 +19,24 @@ if (empty($songNumber) || empty($music_name) || empty($music_audio) || empty($mu
 }
 
 try {
-    if ($_FILES['songImage']['error'] == UPLOAD_ERR_OK) {
-        $music_img = isset($_FILES['songImage']['name']) ? $_FILES['songImage']['name'] : '';
+    $songNumber = validate_music_number($songNumber);
+    $imageUpload = validate_image_upload(isset($_FILES['songImage']) ? $_FILES['songImage'] : null);
+    $music_img = store_validated_upload($imageUpload, __DIR__ . '/../images/' . $songNumber);
 
-        $folderPathImg = '../images/' . $songNumber . '/';
+    $stmt = $conn->prepare("UPDATE music SET music_name = ?, music_img = ?, music_audio = ? WHERE music_id = ?");
+    $stmt->bind_param("sssi", $music_name, $music_img, $music_audio, $music_id);
 
-        $targetPathImg = $folderPathImg . $_FILES['songImage']['name'];
-        move_uploaded_file($_FILES['songImage']['tmp_name'], $targetPathImg);
-
-        $stmt = $conn->prepare("UPDATE music SET music_name = ?, music_img = ?, music_audio = ? WHERE music_id = ?");
-        $stmt->bind_param("sssi", $music_name, $music_img, $music_audio, $music_id);
-
-        if ($stmt->execute()) {
-            echo json_encode(array("result" => true, "message" => "อัพเดตไฟล์และข้อมูลสำเร็จ"));
-        } else {
-            echo json_encode(array("result" => false, "message" => "อัพเดตข้อมูลไม่สำเร็จ:" . $stmt->errno . " - " . $stmt->error));
-        }
-        $stmt->close();
-        // exit(); 
-
+    if ($stmt->execute()) {
+        echo json_encode(array("result" => true, "message" => "อัพเดตไฟล์และข้อมูลสำเร็จ"));
     } else {
-        echo json_encode(array("result" => false, "message" => "ไม่ได้รับข้อมูล file Img"));
-        exit();
+        echo json_encode(array("result" => false, "message" => "อัพเดตข้อมูลไม่สำเร็จ:" . $stmt->errno . " - " . $stmt->error));
     }
+    $stmt->close();
+} catch (UploadValidationException $e) {
+    http_response_code($e->getStatusCode());
+    echo json_encode(array("result" => false, "message" => $e->getMessage()));
+    $conn->close();
+    exit();
 } catch (PDOException $e) {
     echo json_encode(array("result" => false, "message" => "เกิดข้อผิดพลาด: " . $e->getMessage()));
     exit();
