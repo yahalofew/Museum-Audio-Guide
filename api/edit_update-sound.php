@@ -10,7 +10,7 @@ header('Access-Control-Allow-Origin: *');
 try {
     $songNumber = validate_music_number(isset($_POST['songNumber']) ? $_POST['songNumber'] : '');
     $audioUpload = validate_audio_upload(isset($_FILES['fileAudio']) ? $_FILES['fileAudio'] : null);
-    $musicAudio = store_validated_upload($audioUpload, __DIR__ . '/../music/' . $songNumber);
+    $musicAudio = store_validated_upload($audioUpload, 'music', $songNumber);
 
     echo json_encode(array(
         "result" => true,

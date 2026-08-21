@@ -21,7 +21,7 @@ if (empty($songNumber) || empty($music_name) || empty($music_audio) || empty($mu
 try {
     $songNumber = validate_music_number($songNumber);
     $imageUpload = validate_image_upload(isset($_FILES['songImage']) ? $_FILES['songImage'] : null);
-    $music_img = store_validated_upload($imageUpload, __DIR__ . '/../images/' . $songNumber);
+    $music_img = store_validated_upload($imageUpload, 'images', $songNumber);
 
     $stmt = $conn->prepare("UPDATE music SET music_name = ?, music_img = ?, music_audio = ? WHERE music_id = ?");
     $stmt->bind_param("sssi", $music_name, $music_img, $music_audio, $music_id);

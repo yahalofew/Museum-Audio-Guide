@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/media_path.php';
 
 class UploadValidationException extends RuntimeException
 {
@@ -18,12 +19,11 @@ class UploadValidationException extends RuntimeException
 
 function validate_music_number($value)
 {
-    $musicNumber = is_scalar($value) ? (string) $value : '';
-    if (!preg_match('/^[1-9][0-9]*$/D', $musicNumber)) {
-        throw new UploadValidationException('หมายเลขเสียงไม่ถูกต้อง');
+    try {
+        return validate_media_number($value);
+    } catch (MediaPathException $e) {
+        throw new UploadValidationException($e->getMessage(), $e->getStatusCode());
     }
-
-    return $musicNumber;
 }
 
 function validate_audio_upload($file)
@@ -108,8 +108,14 @@ function validate_uploaded_file($file, $allowedTypes, $maxSize, $label)
     ];
 }
 
-function store_validated_upload($upload, $directory)
+function store_validated_upload($upload, $mediaType, $musicNumber)
 {
+    try {
+        $directory = media_directory_path($mediaType, $musicNumber, false);
+    } catch (MediaPathException $e) {
+        throw new UploadValidationException($e->getMessage(), $e->getStatusCode());
+    }
+
     if (!is_dir($directory) && !mkdir($directory, 0755, true)) {
         throw new UploadValidationException('ไม่สามารถสร้างโฟลเดอร์อัปโหลดได้', 500);
     }

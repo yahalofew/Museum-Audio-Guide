@@ -16,8 +16,8 @@ try {
     $audioUpload = validate_audio_upload(isset($_FILES['songFile']) ? $_FILES['songFile'] : null);
     $imageUpload = validate_image_upload(isset($_FILES['songImage']) ? $_FILES['songImage'] : null);
 
-    $music_audio = store_validated_upload($audioUpload, __DIR__ . '/../music/' . $songNumber);
-    $music_img = store_validated_upload($imageUpload, __DIR__ . '/../images/' . $songNumber);
+    $music_audio = store_validated_upload($audioUpload, 'music', $songNumber);
+    $music_img = store_validated_upload($imageUpload, 'images', $songNumber);
 
     $stmt = $conn->prepare("INSERT INTO music (music_name, music_img, music_audio, music_number) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("sssi", $music_name, $music_img, $music_audio, $songNumber);

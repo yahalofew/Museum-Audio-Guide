@@ -1,82 +1,37 @@
 <?php
 require_once __DIR__ . '/admin_auth.php';
 require_admin_auth();
+require_once __DIR__ . '/media_path.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
 include('../server_mysql.php');
 
-// session_start();
+try {
+    $music_number = validate_media_number(isset($_POST['songNumber']) ? $_POST['songNumber'] : '');
 
-$music_number = isset($_POST['songNumber']) ? $_POST['songNumber'] : '';
+    // Resolve both paths before deleting either directory.
+    media_directory_path('images', $music_number, true);
+    media_directory_path('music', $music_number, true);
 
-if ($music_number !== null) {
-    try {
-        // deleteFolderRecursive("../images/{$music_number}");
-        // deleteFolderRecursive("../music/{$music_number}");
-        // ลบรูป
-        $success = deleteFolderRecursive("../images/{$music_number}");
-        if ($success) {
-            // ลบเสียง
-            $successAudio = deleteFolderRecursive("../music/{$music_number}");
-            if ($successAudio) {
-                //ข้อมูล
-                $stmt = $conn->prepare("DELETE FROM music WHERE music_number = ?");
-                $stmt->bind_param("i", $music_number);
+    delete_media_directory('images', $music_number);
+    delete_media_directory('music', $music_number);
 
-                if ($stmt->execute()) {
-                    echo json_encode(array("result" => true, "message" => "ลบข้อมูลสำเร็จ"));
-                } else {
-                    echo json_encode(array("result" => false, "message" => "เกิดข้อผิดพลาดในการลบข้อมูล: " . $stmt->error));
-                }
+    $stmt = $conn->prepare("DELETE FROM music WHERE music_number = ?");
+    $stmt->bind_param("i", $music_number);
 
-                $stmt->close();
-            }
-        }
-        //ถ้าไม่สำเร็จ
-        if (!$success) {
-            echo json_encode(array("result" => false, "message" => "ไม่สามารถลบทั้งหมดได้"));
-        }
-        //error
-    } catch (PDOException $e) {
-        echo json_encode(array("result" => false, "message" => "เกิดข้อผิดพลาด: " . $e->getMessage()));
+    if ($stmt->execute()) {
+        echo json_encode(array("result" => true, "message" => "ลบข้อมูลสำเร็จ"));
+    } else {
+        echo json_encode(array("result" => false, "message" => "เกิดข้อผิดพลาดในการลบข้อมูล: " . $stmt->error));
     }
-    // ไม่มีหมายเลขส่งมา
-} else {
-    echo json_encode(array("result" => false, "message" => "ไม่ได้รับข้อมูล music_number"));
+    $stmt->close();
+} catch (MediaPathException $e) {
+    http_response_code($e->getStatusCode());
+    echo json_encode(array("result" => false, "message" => $e->getMessage()));
+} catch (PDOException $e) {
+    echo json_encode(array("result" => false, "message" => "เกิดข้อผิดพลาด: " . $e->getMessage()));
 }
 
 $conn->close();
-
-function deleteFolderRecursive($path)
-{
-    // ตรวจสอบว่าโฟลเดอร์หรือไฟล์ที่ต้องการลบมีอยู่หรือไม่.
-    if (file_exists($path)) {
-        // ลบ . .. ออก
-        $files = array_diff(scandir($path), array('.', '..'));
-        // ลูปเพื่อลบไฟล์ข้างในออกให้หมดเพื่อจะได้ลบโฟลหลักได้
-        foreach ($files as $file) {
-            // เอาpath กับ file มาต่อกัน
-            $filePath = "$path/$file";
-            // ตรวจสอบว่าเป็นโฟลเดอร์ไม่ใช้ไฟล์ที่ซ้อนอยู่
-            if (is_dir($filePath)) {
-                // เรียกฟังก์ชันลบโฟลเดอร์ซ้อน
-                if (!deleteFolderRecursive($filePath)) {
-                    // ไม่สามารถลบโฟลเดอร์ได้
-                    return false;
-                }
-            } else {
-                //ถ้าเป็นไฟล์จะสั่งลบไฟล์
-                if (!unlink($filePath)) {
-                    // ไม่สามารถลบไฟล์ได้
-                    return false;
-                }
-            }
-        }
-        // ลบโฟลเดอร์ ต้องไม่ไฟล์เหลือ
-        return rmdir($path);
-    }
-    // ไฟล์หรือโฟลเดอร์ไม่มีอยู่
-    return false;
-}
