@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ดูรายการเสียงทั้งหมด</title>
-        <link rel="stylesheet" href="viewAll.css">
+        <link rel="stylesheet" href="viewAll.css?v=2">
         <link rel="stylesheet" href="admin-shell.css">
         <script src="https://kit.fontawesome.com/f5376a0119.js"
             crossorigin="anonymous"></script>
@@ -51,6 +51,28 @@
                 </nav>
             </div>
             <div class="main-content">
+                <header class="list-header">
+                    <div>
+                        <h1>รายการเสียงบรรยาย</h1>
+                        <p id="recordCount">กำลังโหลดข้อมูล...</p>
+                    </div>
+                    <a href="dashboard.html" class="add-audio-link">
+                        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        เพิ่มเสียงบรรยาย
+                    </a>
+                </header>
+                <div id="listState" class="list-state is-loading" role="status" aria-live="polite">
+                    <span class="list-spinner" aria-hidden="true"></span>
+                    <div>
+                        <strong class="state-title">กำลังโหลดรายการ</strong>
+                        <span class="state-message">กรุณารอสักครู่</span>
+                    </div>
+                    <button type="button" id="retryList" class="retry-button" hidden>
+                        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                        ลองใหม่
+                    </button>
+                </div>
+                <div class="table-region is-loading" aria-busy="true">
                 <table id="myTable" class="display" style="width: 100%">
                     <thead>
                         <tr>
@@ -58,17 +80,18 @@
                             <th>ชื่อเสียง</th>
                             <th>รูปภาพประกอบ</th>
                             <th>เสียงบรรยาย</th>
-                            <th>แก้ไข</th>
-                            <th>ลบ</th>
+                            <th>สถานะ Media</th>
+                            <th>จัดการ</th>
                         </tr>
                     </thead>
                     <tbody>
 
                     </tbody>
                 </table>
+                </div>
             </div>
         </section>
 
-        <script src="viewAll.js"></script>
+        <script src="viewAll.js?v=2"></script>
     </body>
 </html>

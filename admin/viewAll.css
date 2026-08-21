@@ -156,16 +156,282 @@ button {
     margin: 4px 2px;
 }
 
-.btn-edit {
-    background-color: rgb(153, 255, 255);
-    cursor: pointer;
-    border-radius: 5px;
+.list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 
-.btn-delete {
-    background-color: red;
+.list-header h1 {
+    margin: 0 0 4px;
+    color: #29245c;
+}
+
+.list-header p {
+    margin: 0;
+    color: #666;
+}
+
+.add-audio-link,
+.action-button,
+.retry-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    border: 0;
+    border-radius: 6px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-decoration: none;
     cursor: pointer;
-    border-radius: 5px;
+}
+
+.add-audio-link {
+    padding: 10px 14px;
+    color: #fff;
+    background: #29245c;
+}
+
+.list-state {
+    min-height: 78px;
+    margin-bottom: 16px;
+    padding: 16px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid #d9d9e8;
+    border-radius: 8px;
+    color: #555;
+    background: #f8f8fc;
+    text-align: center;
+}
+
+.list-state.is-loading,
+.list-state.is-empty,
+.list-state.is-error {
+    display: flex;
+}
+
+.list-state.is-error {
+    color: #8a1c1c;
+    border-color: #f0c5c5;
+    background: #fff4f4;
+}
+
+.list-state > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.state-title {
+    color: #29245c;
+}
+
+.list-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d0d0e5;
+    border-top-color: #29245c;
+    border-radius: 50%;
+    animation: list-spin 0.8s linear infinite;
+}
+
+.list-state:not(.is-loading) .list-spinner {
+    display: none;
+}
+
+@keyframes list-spin {
+    to { transform: rotate(360deg); }
+}
+
+.retry-button {
+    padding: 8px 12px;
+    color: #29245c;
+    background: #fff;
+    border: 1px solid #b9b7cf;
+}
+
+.table-region.is-loading,
+.table-region.is-empty,
+.table-region.is-error {
+    display: none;
+}
+
+.media-thumbnail {
+    display: block;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.media-placeholder {
+    min-width: 120px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 6px;
+    color: #8a1c1c;
+    background: #fff0f0;
+    font-size: 13px;
+}
+
+.table-audio {
+    width: 230px;
+    max-width: 100%;
+}
+
+.media-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border-radius: 999px;
+    color: #176b3a;
+    background: #e8f7ee;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.media-status.is-missing {
+    color: #8a1c1c;
+    background: #fff0f0;
+}
+
+.row-actions {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-button {
+    min-width: 76px;
+    padding: 8px 10px;
+}
+
+.action-button i,
+.add-audio-link i,
+.retry-button i {
+    color: inherit;
+}
+
+.action-button.is-edit {
+    color: #244b5a;
+    background: #dff4f5;
+}
+
+.action-button.is-delete {
+    color: #fff;
+    background: #c62828;
+}
+
+.action-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.action-button:focus-visible,
+.add-audio-link:focus-visible,
+.retry-button:focus-visible {
+    outline: 3px solid rgba(41, 36, 92, 0.28);
+    outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+    .list-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .add-audio-link {
+        width: 100%;
+    }
+
+    .list-state {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-layout .dataTables_wrapper,
+    .admin-layout table.dataTable {
+        min-width: 0 !important;
+        overflow: visible;
+    }
+
+    #myTable thead {
+        display: none;
+    }
+
+    #myTable,
+    #myTable tbody,
+    #myTable tr,
+    #myTable td {
+        display: block;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    #myTable tr {
+        margin-bottom: 14px;
+        padding: 10px;
+        border: 1px solid #dedee9;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    #myTable td {
+        min-height: 44px;
+        padding: 9px 6px 9px 42% !important;
+        position: relative;
+        text-align: left;
+        border-bottom: 1px solid #eeeeF4;
+    }
+
+    #myTable td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 36%;
+        color: #666;
+        font-weight: 500;
+    }
+
+    #myTable td:last-child {
+        padding-left: 6px !important;
+        border-bottom: 0;
+    }
+
+    #myTable td:last-child::before {
+        position: static;
+        display: block;
+        width: auto;
+        margin-bottom: 8px;
+    }
+
+    .media-thumbnail {
+        margin: 0;
+    }
+
+    .table-audio {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .row-actions {
+        justify-content: stretch;
+    }
+
+    .action-button {
+        flex: 1;
+    }
 }
 
 /* หน้าpopup */
