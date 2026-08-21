@@ -1,4 +1,5 @@
 const img = document.querySelector(".music-image img");
+const feedback = window.AdminFormFeedback;
 // const audio = document.querySelector(".control-btn audio");
 
 let id;
@@ -62,18 +63,31 @@ const EditMusicForm = document.getElementById("editMusicForm");
 
 EditMusicForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (EditMusicForm.dataset.submitting === 'true') return;
 
     const songFileInput = document.getElementById("songFile");
     const songImageInput = document.getElementById("songImage");
-    const music_name = document.getElementById("SongTitle").value;
+    const songTitleInput = document.getElementById("SongTitle");
+    const songNumberInput = document.getElementById("songNumber");
+    const music_name = songTitleInput.value.trim();
     //ค่าใหม่ music_number ใหม่
-    const songNumber = document.getElementById("songNumber").value;
+    const songNumber = songNumberInput.value.trim();
+
+    feedback.clear(EditMusicForm);
+    if (!/^\d+$/.test(songNumber)) feedback.field(songNumberInput, 'กรุณากรอกหมายเลขเพลงเป็นตัวเลข');
+    if (!music_name) feedback.field(songTitleInput, 'กรุณากรอกชื่อเพลง');
+    if (!id) feedback.field(songNumberInput, 'ไม่พบข้อมูลเพลงที่ต้องการแก้ไข กรุณากลับไปเลือกรายการใหม่');
+    if (EditMusicForm.querySelector('[aria-invalid="true"]')) {
+        feedback.focusFirstError(EditMusicForm);
+        return;
+    }
 
     //เก็บไว้สำหรับส่งapi
     const formData = new FormData();
     formData.append('songNumber', songNumber);
     formData.append('music_name', music_name);
 
+    feedback.setSubmitting(EditMusicForm, true, 'กำลังบันทึก...');
     try {
         console.log('idที่จะส่งไป: ', id);
         const response = await fetch('../api/read_data-id.php?music_id=' + id);
@@ -89,11 +103,10 @@ EditMusicForm.addEventListener("submit", async (event) => {
 
         if (check) {
             console.log("หมายเลขซ้ำ");
-            return Swal.fire('หมายเลขซ้ำ - มีหมายเลขนี้อยู่!', 'กรุณาเปลี่ยนหมายเลขอื่น', 'error').then(() => {
-                // โหลดหน้าซ้ำ ใหม่         
-                // location.reload();
-                console.log("สมบูรณ์เรียบร้อย");
-            });
+            feedback.field(songNumberInput, 'หมายเลขเพลงนี้มีอยู่แล้ว กรุณาใช้หมายเลขอื่น');
+            feedback.focusFirstError(EditMusicForm);
+            await feedback.error('หมายเลขเพลงนี้มีอยู่แล้ว กรุณาใช้หมายเลขอื่น');
+            return;
         }
 
         console.log('musicsที่เรียกมา: ', musics);
@@ -118,14 +131,11 @@ EditMusicForm.addEventListener("submit", async (event) => {
             const res = await updateImg(formData, musics, songImageInput);
             if (res) {
                 console.log("แก้ไขข้อมูลสำเร็จ");
-                Swal.fire('สำเร็จ!', 'แก้ไขข้อมูลสำเร็จ', 'success').then(() => {
-                    window.location = "./viewall.html";
-                });
+                await feedback.success('แก้ไขข้อมูลสำเร็จ');
+                window.location = "./viewall.html";
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");
-                Swal.fire('ไม่สำเร็จ!', 'อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ', 'error').then(() => {
-                    window.location = "./viewall.html";
-                });
+                await feedback.error('อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ');
             }
 
         }
@@ -153,11 +163,12 @@ EditMusicForm.addEventListener("submit", async (event) => {
                     console.log("สำเร็จในการเปลี่ยนเลข");
                 } else {
                     console.error("เกิดข้อผิดพลาดในการอัปเดตรูปภาพ:", succeed_Renumber.message);
-                    return false;
+                    throw new Error(succeed_Renumber.message || 'ไม่สามารถเปลี่ยนหมายเลขเพลงได้');
                 }
             } else {
                 console.error("เซิร์ฟเวอร์ส่งคืนข้อผิดพลาด:", response_Renumber.status, response_Renumber.statusText);
-                return false;
+                const renameError = await feedback.readJson(response_Renumber);
+                throw new Error(renameError.message || 'ไม่สามารถเปลี่ยนหมายเลขเพลงได้');
             }
 
             const music_id = musics.data[0].music_id;
@@ -172,21 +183,18 @@ EditMusicForm.addEventListener("submit", async (event) => {
 
             if (res) {
                 console.log("แก้ไขข้อมูลสำเร็จ");
-                Swal.fire('สำเร็จ!', 'แก้ไขข้อมูลสำเร็จ', 'success').then(() => {
-                    window.location = "./viewall.html";
-                });
+                await feedback.success('แก้ไขข้อมูลสำเร็จ');
+                window.location = "./viewall.html";
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");
-                Swal.fire('ไม่สำเร็จ!', 'อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ', 'error').then(() => {
-                    window.location = "./viewall.html";
-                });
+                await feedback.error('อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ');
             }
         }
     } catch (error) {
         console.error("Error:" + error);
-        Swal.fire('error!', 'ข้อผิดพลาด', 'error').then(() => {
-            window.location = "./viewall.html";
-        });
+        await feedback.error(error.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+    } finally {
+        feedback.setSubmitting(EditMusicForm, false, 'กำลังบันทึก...');
     }
 });
 

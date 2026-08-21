@@ -1,67 +1,56 @@
+const musicForm = document.getElementById('musicForm');
+const feedback = window.AdminFormFeedback;
 
-document.getElementById('musicForm').addEventListener('submit', async (event) => {
+musicForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (musicForm.dataset.submitting === 'true') return;
 
+    feedback.clear(musicForm);
+    const songTitleInput = document.getElementById('songTitle');
+    const songNumberInput = document.getElementById('songNumber');
+    const songFileInput = document.getElementById('songFile');
+    const songImageInput = document.getElementById('songImage');
+    const songTitle = songTitleInput.value.trim();
+    const songNumber = songNumberInput.value.trim();
 
-    const songTitle = document.getElementById('songTitle').value;
-    const songNumber = document.getElementById('songNumber').value;
-    const songFile = document.getElementById('songFile').files[0];
-    const songImage = document.getElementById('songImage').files[0];
+    if (!/^\d+$/.test(songNumber)) feedback.field(songNumberInput, 'กรุณากรอกหมายเลขเสียงเป็นตัวเลข');
+    if (!songTitle) feedback.field(songTitleInput, 'กรุณากรอกชื่อเสียง');
+    if (!songFileInput.files[0]) feedback.field(songFileInput, 'กรุณาเลือกไฟล์เสียง');
+    if (!songImageInput.files[0]) feedback.field(songImageInput, 'กรุณาเลือกรูปภาพประกอบ');
+    if (musicForm.querySelector('[aria-invalid="true"]')) {
+        feedback.focusFirstError(musicForm);
+        return;
+    }
 
     const formData = new FormData();
     formData.append('songTitle', songTitle);
     formData.append('songNumber', songNumber);
-    formData.append('songFile', songFile);
-    formData.append('songImage', songImage);
+    formData.append('songFile', songFileInput.files[0]);
+    formData.append('songImage', songImageInput.files[0]);
 
+    feedback.setSubmitting(musicForm, true, 'กำลังบันทึก...');
     try {
+        const response = await fetch('../api/read_one-data.php?music_number=' + encodeURIComponent(songNumber));
+        const musics = await feedback.readJson(response);
+        if (!response.ok) throw new Error(musics.message || 'ไม่สามารถตรวจสอบหมายเลขเสียงได้');
 
-        // const response = await fetch('http://localhost:3000/music/' + songNumber);
-        // const musics = await response.json();
-        const response = await fetch('../api/read_one-data.php?music_number=' + songNumber);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const musics = await response.json();
-
-        console.log(songNumber);
-        console.log(musics);
-        // console.log(musics.results[0].music_number);
         if (musics.result) {
-            return Swal.fire({
-                title: 'มีหมายเลขนี้อยู่แล้ว กรุณาเปลี่ยนเป็นหมายเลขอื่น!',
-                text: 'หมายเลขซ้ำ',
-                icon: 'error'
-            });
+            feedback.field(songNumberInput, 'หมายเลขเสียงนี้มีอยู่แล้ว กรุณาใช้หมายเลขอื่น');
+            feedback.focusFirstError(musicForm);
+            await feedback.error('หมายเลขเสียงนี้มีอยู่แล้ว กรุณาใช้หมายเลขอื่น');
+            return;
         }
-        if (!musics.result) {
-            console.log('เพิ่ม');
-            const responseAdd = await fetch('../api/add-sound.php', {
-                method: 'POST',
-                body: formData
-            });
 
-            if (!responseAdd.ok) {
-                throw new Error(`HTTP error! Status: ${responseAdd.status}`);
-            }
+        const responseAdd = await fetch('../api/add-sound.php', { method: 'POST', body: formData });
+        const data = await feedback.readJson(responseAdd);
+        if (!responseAdd.ok || !data.success) throw new Error(data.message || 'ไม่สามารถเพิ่มข้อมูลได้');
 
-            const data = await responseAdd.json();
-            if (data.success) {
-                Swal.fire('สำเร็จ!', 'เพิ่มข้อมูลสำเร็จ', 'success').then(() => {
-                    location.reload();
-                });
-                // เพิ่มโค้ดสำหรับการดำเนินการหลังบันทึกข้อมูลเพลงเสร็จ
-            } else {
-                return Swal.fire('มีข้อผิดพลาดในการเชื่อมต่อ', 'โปรดลองอีกครั้ง', 'error');
-            }
-        }
+        await feedback.success(data.message || 'เพิ่มข้อมูลสำเร็จ');
+        location.reload();
     } catch (error) {
-        Swal.fire('error!', 'ข้อผิดพลาด', 'error').then(() => {
-            location.reload();
-        });
+        console.error('Add audio error:', error);
+        await feedback.error(error.message || 'เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+    } finally {
+        feedback.setSubmitting(musicForm, false, 'กำลังบันทึก...');
     }
 });
-
-
-
-
