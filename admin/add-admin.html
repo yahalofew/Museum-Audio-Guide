@@ -8,7 +8,7 @@
         <script src="https://kit.fontawesome.com/f5376a0119.js"
             crossorigin="anonymous"></script>
         <link rel="stylesheet" href="add-admin.css">
-        <link rel="stylesheet" href="admin-shell.css?v=3">
+        <link rel="stylesheet" href="admin-shell.css?v=4">
         <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -56,19 +56,27 @@
                                 <small>อนุญาตให้ใช้ a-z, A-Z, 0-9 และ _ เท่านั้น</small>
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group password-input-group">
                                 <label for="password">รหัสผ่าน</label>
                                 <input type="password" id="password" name="password"
                                     required
                                     placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
                                     minlength="6" autocomplete="new-password">
+                                <button type="button" class="password-toggle"
+                                    data-password-target="password"
+                                    aria-controls="password"
+                                    aria-pressed="false">แสดง</button>
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group password-input-group">
                                 <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
                                 <input type="password" id="confirmPassword"
                                     name="confirmPassword" required
                                     placeholder="กรอกรหัสผ่านอีกครั้ง" autocomplete="new-password">
+                                <button type="button" class="password-toggle"
+                                    data-password-target="confirmPassword"
+                                    aria-controls="confirmPassword"
+                                    aria-pressed="false">แสดง</button>
                             </div>
 
                             <div class="button-group">
@@ -82,6 +90,7 @@
             </div>
         </section>
         <script src="admin-form-feedback.js?v=1"></script>
+        <script src="password-visibility.js?v=1"></script>
         <script src="add-admin.js?v=2"></script>
     </body>
 </html>

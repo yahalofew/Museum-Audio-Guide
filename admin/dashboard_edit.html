@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แก้ไขข้อมูล</title>
     <link rel="stylesheet" href="dashboard_edit.css">
-    <link rel="stylesheet" href="admin-shell.css?v=3">
+    <link rel="stylesheet" href="admin-shell.css?v=4">
     <script src="https://kit.fontawesome.com/f5376a0119.js"
       crossorigin="anonymous"></script>
 
@@ -77,11 +77,17 @@
           </div>
           <div>
             <label for="songFile">ไฟล์เสียง</label>
-            <input type="file" id="songFile" name="songFile" accept="audio/*">
+            <input type="file" id="songFile" name="songFile" accept="audio/*"
+              data-preview-target="audioPreview">
+            <audio id="audioPreview" class="upload-preview-audio"
+              controls preload="metadata" hidden></audio>
           </div>
           <div>
             <label for="songImage">รูปภาพประกอบ</label>
-            <input type="file" id="songImage" name="songImage" accept="image/*">
+            <input type="file" id="songImage" name="songImage" accept="image/*"
+              data-preview-target="imagePreview">
+            <img id="imagePreview" class="upload-preview-image"
+              alt="ตัวอย่างรูปภาพที่เลือก" hidden>
           </div>
           <button type="submit">บันทึกการแก้ไข</button>
         </form>
@@ -92,7 +98,8 @@
     <!-- <audio src="music/1/music1.mp3" class="main-song" id="audioElement"></audio> -->
 
     <script src="admin-form-feedback.js?v=1"></script>
-    <script src="dashboard_edit.js?v=3"></script>
+    <script src="media-preview.js?v=1"></script>
+    <script src="dashboard_edit.js?v=4"></script>
 
   </body>
 

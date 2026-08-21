@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>เข้าสู่ระบบผู้ดูแล</title>
-    <link rel="stylesheet" href="admin-style.css?v=3">
+    <link rel="stylesheet" href="admin-style.css?v=4">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
   </head>
@@ -23,10 +23,13 @@
             <div class="line"></div>
           </div>
           <!-- Password -->
-          <div class="input-group">
+          <div class="input-group password-input-group">
             <input type="password" id="password" autocomplete="current-password" required>
             <label for="password">รหัสผ่าน</label>
             <div class="line"></div>
+            <button type="button" class="password-toggle"
+              data-password-target="password" aria-controls="password"
+              aria-pressed="false">แสดง</button>
 
           </div>
           <!-- ปุ่มตกลง -->
@@ -37,6 +40,7 @@
 
       </div>
     </div>
+    <script src="password-visibility.js?v=1"></script>
     <script src="login.js"></script>
     <!-- <script src="script.js"></script> -->
   </body>

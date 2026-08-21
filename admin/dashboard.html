@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เพิ่มเสียง</title>
         <link rel="stylesheet" href="dashboard.css">
-        <link rel="stylesheet" href="admin-shell.css?v=3">
+        <link rel="stylesheet" href="admin-shell.css?v=4">
         <script src="https://kit.fontawesome.com/f5376a0119.js"
             crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -60,12 +60,18 @@
                     <div>
                         <label for="songFile">ไฟล์เสียง</label>
                         <input type="file" id="songFile" name="songFile"
-                            accept="audio/*" required>
+                            accept="audio/*" required
+                            data-preview-target="audioPreview">
+                        <audio id="audioPreview" class="upload-preview-audio"
+                            controls preload="metadata" hidden></audio>
                     </div>
                     <div>
                         <label for="songImage">รูปภาพประกอบ</label>
                         <input type="file" id="songImage" name="songImage"
-                            accept="image/*" required>
+                            accept="image/*" required
+                            data-preview-target="imagePreview">
+                        <img id="imagePreview" class="upload-preview-image"
+                            alt="ตัวอย่างรูปภาพที่เลือก" hidden>
                     </div>
                     <div>
                         <button type="submit">บันทึก</button>
@@ -76,6 +82,7 @@
         </section>
         <!-- แถบด้านซ้าย -->
         <script src="admin-form-feedback.js?v=1"></script>
+        <script src="media-preview.js?v=1"></script>
         <script src="dashboard.js?v=2"></script>
         <!-- เพิ่มไฟล์ JavaScript เพื่อจัดการการส่งข้อมูล -->
     </body>

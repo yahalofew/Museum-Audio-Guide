@@ -61,6 +61,22 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 });
 
 const EditMusicForm = document.getElementById("editMusicForm");
+let hasUnsavedChanges = false;
+
+EditMusicForm.addEventListener("input", () => {
+    hasUnsavedChanges = true;
+});
+
+EditMusicForm.addEventListener("change", () => {
+    hasUnsavedChanges = true;
+});
+
+window.addEventListener("beforeunload", (event) => {
+    if (!hasUnsavedChanges) return;
+
+    event.preventDefault();
+    event.returnValue = '';
+});
 
 EditMusicForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -133,6 +149,7 @@ EditMusicForm.addEventListener("submit", async (event) => {
             if (res) {
                 console.log("แก้ไขข้อมูลสำเร็จ");
                 await feedback.success('แก้ไขข้อมูลสำเร็จ');
+                hasUnsavedChanges = false;
                 window.location = "./viewall.html";
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");
@@ -185,6 +202,7 @@ EditMusicForm.addEventListener("submit", async (event) => {
             if (res) {
                 console.log("แก้ไขข้อมูลสำเร็จ");
                 await feedback.success('แก้ไขข้อมูลสำเร็จ');
+                hasUnsavedChanges = false;
                 window.location = "./viewall.html";
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");

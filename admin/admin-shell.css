@@ -190,6 +190,54 @@ body {
     padding: 7px 10px;
 }
 
+.admin-layout .upload-preview-image,
+.admin-layout .upload-preview-audio {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 10px;
+}
+
+.admin-layout .upload-preview-image {
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    object-fit: contain;
+    background: #f5f5f7;
+}
+
+.admin-layout [hidden] {
+    display: none !important;
+}
+
+.admin-layout .password-input-group {
+    position: relative;
+}
+
+.admin-layout .password-input-group input {
+    padding-right: 72px;
+}
+
+.admin-layout .password-toggle {
+    position: absolute;
+    right: 6px;
+    bottom: 0;
+    min-width: 60px;
+    min-height: 44px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 4px;
+    color: var(--admin-primary);
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-layout .password-toggle:hover {
+    background: #ededf3;
+}
+
 .admin-layout button,
 .admin-layout .btn-primary,
 .admin-layout .btn-secondary,
