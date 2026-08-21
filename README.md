@@ -128,9 +128,17 @@ Visitor เรียก public read endpoints ภายใต้ `api/` แบ�
 
 ปรับชื่อ path ใน URL ให้ตรงกับชื่อโฟลเดอร์ที่ clone ไว้ใต้ `htdocs`
 
+## Verification
+
+เมื่อ Apache/MySQL เปิดอยู่ สามารถรัน regression checks สำหรับ Visitor, Admin, Auth, API, media และ QR deep-link ได้ด้วย:
+
+    pwsh -File tests/verify.ps1 -BaseUrl http://localhost/project
+
+ชุดตรวจไม่แก้ข้อมูลในฐานข้อมูลและไม่ต้องติดตั้ง dependency เพิ่ม หากต้องการรวม authenticated login → protected API → logout flow ให้กำหนด MUSEUM_ADMIN_USERNAME และ MUSEUM_ADMIN_PASSWORD ใน environment ก่อนรัน สคริปต์จะไม่พิมพ์ค่าทั้งสองออกมา ใช้ -RequireAuthenticatedAuth เมื่อต้องการให้การไม่มี credentials ทำให้ชุดตรวจล้มเหลว
+
 ## Project Status
 
-ระบบหลักพร้อมสำหรับการพัฒนาและทดสอบต่อบน XAMPP: Visitor player, QR deep-link, Admin CRUD, authentication, upload/path validation, media integrity และ responsive UI ถูกเชื่อมเข้ากับ flow ปัจจุบันแล้ว โปรเจกต์ยังคงใช้ native PHP และไม่มี dependency manager หรือ automated test suite ดังนั้นควรรัน syntax checks และทดสอบ flow ผ่าน localhost ทุกครั้งที่แก้ไข
+ระบบหลักพร้อมสำหรับการพัฒนาและทดสอบต่อบน XAMPP: Visitor player, QR deep-link, Admin CRUD, authentication, upload/path validation, media integrity และ responsive UI ถูกเชื่อมเข้ากับ flow ปัจจุบันแล้ว โปรเจกต์ยังคงใช้ native PHP และไม่มี dependency manager; ใช้ tests/verify.ps1 ตรวจ regression ผ่าน localhost ทุกครั้งที่แก้ไข
 
 ## License
 
