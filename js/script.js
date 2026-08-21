@@ -1,371 +1,282 @@
-const content = document.querySelector(".content"),
-  Playimage = content.querySelector(".music-image img"),
-  musicName = content.querySelector(".music-titles .name"),
-  musicArtist = content.querySelector(".music-titles .artist"),
+const content = document.querySelector('.content');
+const playImage = content.querySelector('.music-image img');
+const musicName = content.querySelector('.music-titles .name');
+const musicNumber = content.querySelector('.music-titles .artist');
+const audio = document.querySelector('.main-song');
+const playButton = content.querySelector('.play-pause');
+const playButtonIcon = playButton.querySelector('span');
+const previousButton = content.querySelector('#prev');
+const nextButton = content.querySelector('#next');
+const progress = content.querySelector('.progress-details');
+const progressBar = content.querySelector('.progress-bar');
+const currentTimeLabel = progress.querySelector('.current');
+const finalTimeLabel = progress.querySelector('.final');
+const statusMessage = content.querySelector('.status-message');
+const displayNumber = content.querySelector('.display-number');
+const numberButtons = Array.from(content.querySelectorAll('.number-button'));
 
-  Audio = document.querySelector(".main-song"),
-  playBtn = content.querySelector(".play-pause"),
-  playBtnIcon = content.querySelector(".play-pause span"),
-  // ID ปุ่มถัดไปและก่อนหน้า
-  prevBtn = content.querySelector("#prev"),
-  // ID ปุ่มถัดไป
-  nextBtn = content.querySelector("#next"),
+let currentTrack = null;
+let currentNumber = '';
+let numberTimeout;
+let isDragging = false;
+let shouldAutoplay = false;
 
-  progressBar = content.querySelector(".progress-bar"),
-  progressDetails = content.querySelector(".progress-details");
+window.addEventListener('load', loadInitialTrack);
 
-let loadSongs;
-let index = 1;
+function setPlayerState(state, message) {
+  if (state === 'ready' && content.classList.contains('has-media-error')) {
+    state = 'error';
+    message = message || statusMessage.textContent || 'ไม่พบภาพประกอบของเสียงบรรยายนี้';
+  }
+  content.classList.remove('is-loading', 'is-ready', 'is-empty', 'is-error');
+  content.classList.add(`is-${state}`);
+  content.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
+  statusMessage.textContent = message || '';
 
-// เหมือนหน้าเว็บโหลดเสร็จแล้วจะทำทำงาน
-window.addEventListener("load", () => {
-  loadData();
+  const noAudio = !audio.getAttribute('src');
+  const navigationBlocked = state === 'loading' || state === 'empty';
+  playButton.disabled = navigationBlocked || noAudio;
+  previousButton.disabled = navigationBlocked;
+  nextButton.disabled = navigationBlocked;
+  progress.setAttribute('aria-disabled', navigationBlocked || noAudio ? 'true' : 'false');
+  numberButtons.forEach((button) => { button.disabled = navigationBlocked; });
+}
+
+function handleDataError(error) {
+  console.error('Music data error:', error);
+  resetPlayback();
+  if (error && error.code === 'EMPTY') {
+    setPlayerState('empty', 'ยังไม่มีเสียงบรรยายในขณะนี้');
+  } else if (error && error.code === 'NO_PLAYABLE_MEDIA') {
+    setPlayerState('empty', 'ยังไม่มีไฟล์เสียงบรรยายที่พร้อมใช้งาน');
+  } else {
+    setPlayerState('error', 'ไม่สามารถโหลดเสียงบรรยายได้ กรุณาลองใหม่');
+  }
+}
+
+function sortedTracks(data) {
+  return data.slice().sort((a, b) => Number(a.music_number) - Number(b.music_number));
+}
+
+function loadInitialTrack() {
+  setPlayerState('loading', 'กำลังโหลดเสียงบรรยาย...');
+  fetchData((error, data) => {
+    if (error) {
+      handleDataError(error);
+      return;
+    }
+    loadTrack(sortedTracks(data)[0], false);
+  });
+}
+
+function loadAdjacentTrack(direction) {
+  setPlayerState('loading', 'กำลังโหลดเสียงบรรยาย...');
+  fetchData((error, data) => {
+    if (error) {
+      handleDataError(error);
+      return;
+    }
+
+    const tracks = sortedTracks(data);
+    const currentIndex = tracks.findIndex((track) => currentTrack
+      && String(track.music_number) === String(currentTrack.music_number));
+    const nextIndex = currentIndex < 0
+      ? (direction > 0 ? 0 : tracks.length - 1)
+      : (currentIndex + direction + tracks.length) % tracks.length;
+    loadTrack(tracks[nextIndex], true);
+  });
+}
+
+function loadTrack(track, autoplay) {
+  currentTrack = track;
+  shouldAutoplay = autoplay;
+  content.classList.remove('has-media-error', 'paused');
+  musicName.textContent = ` - ${track.music_name}`;
+  musicNumber.textContent = track.music_number;
+  playImage.alt = `ภาพประกอบ ${track.music_name}`;
+  playImage.src = `images/${track.music_number}/${track.music_img}`;
+  audio.src = `music/${track.music_number}/${track.music_audio}`;
+  playButtonIcon.textContent = 'play_arrow';
+  playButton.setAttribute('aria-label', 'เล่นเสียงบรรยาย');
+  resetProgress();
+  setPlayerState('loading', 'กำลังเตรียมเสียงบรรยาย...');
+  audio.load();
+}
+
+function resetPlayback() {
+  currentTrack = null;
+  shouldAutoplay = false;
+  audio.pause();
+  audio.removeAttribute('src');
+  playImage.removeAttribute('src');
+  musicName.textContent = '';
+  musicNumber.textContent = '';
+  content.classList.remove('paused', 'has-media-error');
+  playButtonIcon.textContent = 'play_arrow';
+  playButton.setAttribute('aria-label', 'เล่นเสียงบรรยาย');
+  resetProgress();
+}
+
+function resetProgress() {
+  progressBar.style.width = '0%';
+  currentTimeLabel.textContent = '0:00';
+  finalTimeLabel.textContent = '0:00';
+  updateProgressAccessibility(0, 0);
+}
+
+async function playSong() {
+  if (!audio.getAttribute('src')) return;
+  try {
+    await audio.play();
+    content.classList.add('paused');
+    playButtonIcon.textContent = 'pause';
+    playButton.setAttribute('aria-label', 'หยุดเสียงบรรยายชั่วคราว');
+    setPlayerState('ready', '');
+  } catch (error) {
+    console.error('Audio playback error:', error);
+    pauseSong();
+    setPlayerState('error', 'ไม่สามารถเล่นไฟล์เสียงนี้ได้ กรุณาเลือกเสียงบรรยายอื่น');
+  }
+}
+
+function pauseSong() {
+  content.classList.remove('paused');
+  playButtonIcon.textContent = 'play_arrow';
+  playButton.setAttribute('aria-label', 'เล่นเสียงบรรยาย');
+  audio.pause();
+}
+
+playButton.addEventListener('click', () => {
+  if (content.classList.contains('paused')) pauseSong();
+  else playSong();
 });
 
-//เมื่อหน้าเว็บโหลดเสร็จ จะทำฟังก์ชันนี้ จะทำการโหลดนำเพลงเข้า songslist เอาเพลงแรกมาใส่
-//เป็นส่วน โหลดเพลงเมื่อหน้าเว็บที่ใช้ 
-async function loadData() {
-  fetchData(function (error, data) {
-    if (error) {
-      console.log('เกิดข้อผิดพลาด', error);
-    } else {
-      var dataNumber = 1;
-      var maxValue = Math.max(...data.map(item => parseInt(item.music_number)));
-      while (dataNumber <= maxValue) {
-        let found = false;
-        data.forEach((number, indexNext) => {
-          if (dataNumber == number.music_number) {
-            musicName.innerHTML = " - " + number.music_name;
-            musicArtist.innerHTML = number.music_number;
-            Playimage.src = "images/" + number.music_number + "/" + number.music_img;
-            Audio.src = "music/" + number.music_number + "/" + number.music_audio;
-            found = true;
-            index = indexNext + 1;
-            return;
-          }
-        });
-        if (found) {
-          break;
-        }
-        dataNumber++;
-      };
-    }
-  });
-}
+nextButton.addEventListener('click', () => loadAdjacentTrack(1));
+previousButton.addEventListener('click', () => loadAdjacentTrack(-1));
 
-//ฟังก์ชั้นไปข้างหน้า
-async function loadDatatoNext(indexValue) {
-  fetchData(function (error, data) {
-    if (error) {
-      console.log('เกิดข้อผิดพลาด', error);
-    } else {
-      var dataNumber = parseInt(data[indexValue - 1].music_number);
-      var maxValue = Math.max(...data.map(item => parseInt(item.music_number)));
-      // ตัวเลขน้อบกว่าเลขมากกสุด
-      while (dataNumber <= maxValue) {
-        dataNumber++;
-        let found = false;
-        data.forEach((number, indexNext) => {
-          // 2 == 1, 2, 3, 4, 5 จนกว่าจะเจอ ถ้าไม่เจอออกลูปมาเพิ่มค่าแล้วมาลูปใหม่
-          // 2=1, 2=2 -> ture
-          if (dataNumber == number.music_number) {
-            musicName.innerHTML = " - " + number.music_name;
-            musicArtist.innerHTML = number.music_number;
-            Playimage.src = "images/" + number.music_number + "/" + number.music_img;
-            Audio.src = "music/" + number.music_number + "/" + number.music_audio;
-            playSong();
-            found = true;
-            // index -> 0,1,2,3,4,5,6,7, จะต้อง+1 เพราะเราตั้งเริ่มแรกที่1 
-            index = indexNext + 1;
-            return;
-
-          }
-        });
-        // 
-        if (dataNumber > maxValue) {
-          // ถ้าตัวเลขมากกว่าตัวเลขทั้งหมดให้เริ่มใหม่
-          loadData();
-          playSong();
-          return;
-        }
-        if (found) {
-          break;
-        }
-      };
-    }
-  });
-};
-
-//ฟังก์ชั้นย้อนหลัง
-async function loadDatatoPrev(indexValue) {
-  fetchData(function (error, data) {
-    if (error) {
-      console.log('เกิดข้อผิดพลาด', error);
-    } else {
-      var dataNumber = parseInt(data[indexValue - 1].music_number);
-      var minValue = Math.min(...data.map(item => parseInt(item.music_number)));
-      var maxValue = Math.max(...data.map(item => parseInt(item.music_number)));
-
-      console.log("เลขต่ำสุด", minValue);
-      // 3 >= 1 ture
-      // 1 >= 1 ture
-      // 0 >= 1 false
-      // เลขมากกว่า เลขต่ำสุด
-      while (dataNumber >= minValue) {
-        // ลบจาก3 > =2
-        // 2 > = 1
-        // 1 > 0 แล้วออก แต่ยังไม่ออกก่อนมาอีกรอบ
-        dataNumber--;
-        let found = false;
-        data.forEach((number, indexPrev) => {
-          // 2 == 1, 2, 3, 4, 5 จนกว่าจะเจอ ถ้าไม่เจอออกลูปมาเพิ่มค่าแล้วมาลูปใหม่
-          // 2 == 2 หา
-          if (dataNumber == number.music_number) {
-            musicName.innerHTML = " - " + number.music_name;
-            musicArtist.innerHTML = number.music_number;
-            Playimage.src = "images/" + number.music_number + "/" + number.music_img;
-            Audio.src = "music/" + number.music_number + "/" + number.music_audio;
-            playSong();
-            found = true;
-            // index -> 0,1,2,3,4,5,6,7, จะต้อง+1 เพราะเราตั้งเริ่มแรกที่1 
-            index = indexPrev + 1;
-            return;
-          }
-        });
-        // น้อยกว่า 0
-        if (dataNumber < minValue) {
-          data.forEach((number, indexPrev) => {
-            if (maxValue == number.music_number) {
-              musicName.innerHTML = " - " + number.music_name;
-              musicArtist.innerHTML = number.music_number;
-              Playimage.src = "images/" + number.music_number + "/" + number.music_img;
-              Audio.src = "music/" + number.music_number + "/" + number.music_audio;
-              playSong();
-              found = true;
-              // index -> 0,1,2,3,4,5,6,7, จะต้อง+1 เพราะเราตั้งเริ่มแรกที่1 
-              index = indexPrev + 1;
-              return;
-            }
-          });
-        }
-        // 0 <= 1 น้อยกว่านั้นเริ่มจากมากสุดแทน
-        if (found) {
-          break;
-        }
-      };
-    }
-  });
-}
-
-//ตัวหยุดและเล่น
-playBtn.addEventListener("click", () => {
-  //ตรวจสอบว่ามี paused อยู่ไหม classList.contains ไม่add แล้วจะใส่ turn/false 
-  const isMusicPaused = content.classList.contains("paused");
-  if (isMusicPaused) {
-    pauseSong();
+playImage.addEventListener('error', () => {
+  content.classList.add('has-media-error');
+  playImage.alt = 'ไม่พบภาพประกอบเสียงบรรยาย';
+  if (!content.classList.contains('is-error')) {
+    setPlayerState('error', 'ไม่พบภาพประกอบของเสียงบรรยายนี้');
   }
-  else {
+});
+
+playImage.addEventListener('load', () => content.classList.remove('has-media-error'));
+
+audio.addEventListener('loadedmetadata', () => {
+  if (!Number.isFinite(audio.duration)) return;
+  finalTimeLabel.textContent = formatTime(audio.duration);
+  updateProgressAccessibility(audio.currentTime, audio.duration);
+  setPlayerState('ready', '');
+  if (shouldAutoplay) {
+    shouldAutoplay = false;
     playSong();
   }
 });
 
-
-//เล่นเสียง play -> paused
-function playSong() {
-  if (!Audio.getAttribute("src")) {
-    return;
-  }
-
-  content.classList.add("paused");
-  playBtnIcon.innerHTML = "pause";
-  Audio.play();
-  // playBtn.innerHTML = '<i class="fa fa-pause-circle fa-5x">'
-  // playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
-
-}
-//หยุด จาก paused -> play
-function pauseSong() {
-
-  content.classList.remove("paused");
-  playBtnIcon.innerHTML = "play_arrow";
-  Audio.pause();
-
-}
-nextBtn.addEventListener("click", () => {
-  console.log(index);
-  loadDatatoNext(index);
+audio.addEventListener('waiting', () => {
+  if (!audio.paused) setPlayerState('loading', 'กำลังโหลดเสียงบรรยาย...');
 });
 
-prevBtn.addEventListener("click", () => {
-  console.log(index);
-  loadDatatoPrev(index);
+audio.addEventListener('playing', () => setPlayerState('ready', ''));
+
+audio.addEventListener('error', () => {
+  pauseSong();
+  setPlayerState('error', 'ไม่สามารถโหลดไฟล์เสียงนี้ได้ กรุณาเลือกเสียงบรรยายอื่น');
 });
 
-let isDragging = false;
+audio.addEventListener('timeupdate', () => {
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const percent = Math.min(100, Math.max(0, (audio.currentTime / audio.duration) * 100));
+  progressBar.style.width = `${percent}%`;
+  currentTimeLabel.textContent = formatTime(audio.currentTime);
+  updateProgressAccessibility(audio.currentTime, audio.duration);
+});
 
-progressDetails.addEventListener("mousedown", (e) => {
+audio.addEventListener('ended', () => loadAdjacentTrack(1));
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${remainingSeconds}`;
+}
+
+function updateProgressAccessibility(current, duration) {
+  const percent = duration > 0 ? Math.round((current / duration) * 100) : 0;
+  progress.setAttribute('aria-valuenow', String(percent));
+  progress.setAttribute('aria-valuetext', `${formatTime(current)} จาก ${formatTime(duration)}`);
+}
+
+function seekFromClientX(clientX) {
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  const bounds = progress.getBoundingClientRect();
+  const ratio = Math.min(1, Math.max(0, (clientX - bounds.left) / bounds.width));
+  audio.currentTime = ratio * audio.duration;
+}
+
+progress.addEventListener('pointerdown', (event) => {
+  if (progress.getAttribute('aria-disabled') === 'true') return;
   isDragging = true;
-  updateProgress(e);
+  progress.classList.add('is-dragging');
+  progress.setPointerCapture(event.pointerId);
+  seekFromClientX(event.clientX);
 });
 
-progressDetails.addEventListener("mousemove", (e) => {
-  if (isDragging) {
-    updateProgress(e);
-  }
+progress.addEventListener('pointermove', (event) => {
+  if (isDragging) seekFromClientX(event.clientX);
 });
 
-document.addEventListener("mouseup", () => {
+progress.addEventListener('pointerup', (event) => {
   isDragging = false;
+  progress.classList.remove('is-dragging');
+  if (progress.hasPointerCapture(event.pointerId)) progress.releasePointerCapture(event.pointerId);
 });
 
-progressDetails.addEventListener("touchstart", (e) => {
-  isDragging = true;
-  updateProgress(e.touches[0]); // เพียงแก้ไขตำแหน่งแรกเท่านั้น
+progress.addEventListener('keydown', (event) => {
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+  let newTime = audio.currentTime;
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') newTime -= 5;
+  else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') newTime += 5;
+  else if (event.key === 'Home') newTime = 0;
+  else if (event.key === 'End') newTime = audio.duration;
+  else return;
+  event.preventDefault();
+  audio.currentTime = Math.min(audio.duration, Math.max(0, newTime));
 });
 
-progressDetails.addEventListener("touchmove", (e) => {
-  if (isDragging) {
-    updateProgress(e.touches[0]); // เพียงแก้ไขตำแหน่งแรกเท่านั้น
-  }
-});
-
-document.addEventListener("touchend", () => {
-  isDragging = false;
-});
-
-function updateProgress(e) {
-  const progressValue = progressDetails.clientWidth; // ความกว้างของแถบหลอดเสียง
-  const clickedOffsetX = e.clientX - progressDetails.getBoundingClientRect().left; // ค่าตำแหน่ง X ของเมาส์เมื่อคลิกบนแถบหลอดเสียง
-  const musicDuration = Audio.duration; // ระยะเวลาทั้งหมดของเพลง
-
-  const newTime = (clickedOffsetX / progressValue) * musicDuration;
-  Audio.currentTime = newTime;
-}
-
-Audio.addEventListener("timeupdate", function (e) {
-  const initialTime = e.target.currentTime;
-  const finalTime = e.target.duration;
-  let barWidth = (initialTime / finalTime) * 100;
-  progressBar.style.width = barWidth + "%";
-
-  // แสดงเวลาปัจจุบันในแถบเวลา
-  let currentTimeData = progressDetails.querySelector(".current");
-  let currentMinutes = Math.floor(initialTime / 60);
-  let currentSeconds = Math.floor(initialTime % 60);
-  if (currentSeconds < 10) {
-    currentSeconds = "0" + currentSeconds;
-  }
-  currentTimeData.innerText = currentMinutes + ":" + currentSeconds;
-});
-
-progressDetails.addEventListener("click", function (e) {
-  let progressValue = progressDetails.clientWidth;
-  let clickedOffsetX = e.clientX - progressDetails.getBoundingClientRect().left;
-  let musicDuration = Audio.duration;
-
-  // คำนวณเวลาใหม่ที่จะเล่นต่อไป
-  Audio.currentTime = (clickedOffsetX / progressValue) * musicDuration;
-});
-
-// คำนวณเวลาสุดท้ายและแสดงในแถบเวลา
-Audio.addEventListener("loadeddata", function () {
-  let finalTimeData = progressDetails.querySelector(".final");
-  let audioDuration = Audio.duration;
-  let finalMinutes = Math.floor(audioDuration / 60);
-  let finalSeconds = Math.floor(audioDuration % 60);
-  if (finalSeconds < 10) {
-    finalSeconds = "0" + finalSeconds;
-  }
-  finalTimeData.innerText = finalMinutes + ":" + finalSeconds;
-});
-
-//เมื่อเพลงจบลงจะขึ้นเพลงต่อไป
-Audio.addEventListener("ended", async () => {
-
-  fetchData(function (error, data) {
-    if (error) {
-      console.log('เกิดข้อผิดพลาด', error);
-    } else {
-      loadDatatoNext(index);
-      playSong();
-    }
-  });
-});
-
-const displayNumber = document.querySelector('.display-number');
-const buttons = document.querySelectorAll('.number-button');
-let currentNumber = "";
-let timeoutId; // เก็บ ID ของ setTimeout
-
-//ส่วนปุ่มหมายเลข
-buttons.forEach(button => {
+numberButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    const number = button.getAttribute('data-number');
-    currentNumber += number;
+    currentNumber += button.dataset.number;
     displayNumber.textContent = currentNumber;
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      playSongById();
-    }, 3000);
+    clearTimeout(numberTimeout);
+    numberTimeout = setTimeout(playSongByNumber, 3000);
   });
 });
 
-
-async function playSongById() {
-  fetchData(function (error, data) {
+function playSongByNumber() {
+  setPlayerState('loading', 'กำลังค้นหาเสียงบรรยาย...');
+  fetchData((error, data) => {
     if (error) {
-      console.log('เกิดข้อผิดพลาด', error);
+      handleDataError(error);
+      clearNumberEntry();
+      return;
+    }
+
+    const track = data.find((item) => String(item.music_number) === currentNumber);
+    if (track) {
+      clearNumberEntry();
+      loadTrack(track, true);
     } else {
-      // loadSound = await fetchMusicData();
-      const audio = document.querySelector('.main-song');
-      const songTitle = document.querySelector('.name');
-      // เปลี่ยนชื่อให้ตรง
-      const songArtist = document.querySelector('.artist');
-      const songImage = document.querySelector('.music-image img');
-      // const currentNumber = "";
-      // ข้อมูลที่ได้
-      console.log("รายการเสียงทั้งหมด", data);
-      // หมายเลขที่ผู้ใช้เลือก
-      console.log("ค่าที่ผู้ใช้ป้อน", currentNumber);
-      // ตรวจสอบถ้าไม่จริงก็แปรว่าไม่มีรหัสนี้แต่เมื่อเปลี่ยนเป็น จริง แปลว่ามี
-      let isSoungFound = false;
-      //เอาข้อมูลมาลูป และเก็บลงตัวแปร button , x เป็นตัวนับการลูปว่าไปกี่ครั้งแล้ว
-      data.forEach(function (button, x) {
-        console.log(button.music_number);
-        if (button.music_number == currentNumber) {
-          const songlists = data[x];
-          console.log(songlists);
-
-          audio.src = 'music/' + songlists.music_number + "/" + songlists.music_audio;
-          songTitle.textContent = " - " + songlists.music_name;
-          songArtist.textContent = songlists.music_number;
-          songImage.src = 'images/' + songlists.music_number + "/" + songlists.music_img;
-          Audio.play();
-
-          //เก็บเลขindex เพื่อเอาไว้ใช้กับค่าไปข้างหน้า
-
-          index = x + 1;
-          console.log("เลขindex ใหม่: ", index);
-          // trueระบุว่ามีหมายเลขที่ป้อนมา
-          isSoungFound = true;
-
-          content.classList.add("paused");
-          //เปลี่ยนไอคอนให้เป็น pause 
-          playBtnIcon.innerHTML = "pause";
-
-          currentNumber = currentNumber.slice(0, 0);
-          displayNumber.textContent = currentNumber;
-          displayNumber.innerHTML = "&nbsp;";
-        }
-      });
-
-      if (!isSoungFound) {
-        currentNumber = currentNumber.slice(0, 0);
-        displayNumber.textContent = currentNumber;
-        displayNumber.innerHTML = "&nbsp;";
-        displayNumber.textContent = "ไม่มีเสียงบรรยายหมายเลขนี้";
-      }
+      displayNumber.textContent = 'ไม่มีเสียงบรรยายหมายเลขนี้';
+      currentNumber = '';
+      setPlayerState('ready', '');
     }
   });
-};
+}
 
+function clearNumberEntry() {
+  currentNumber = '';
+  displayNumber.innerHTML = '&nbsp;';
+}

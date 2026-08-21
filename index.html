@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 
   <!-- เป็นfont-familyชื่อ"Material Symbols Rounded" จากgoogle โดยจะเป็นพวก สัญลักษณ์ เพื่อเอาไปใช้กับicon ต่างในเว็บ -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -17,7 +17,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-  <main class="content">
+  <main class="content is-loading" aria-busy="true">
+    <div class="player-status" role="status" aria-live="polite">
+      <span class="status-spinner" aria-hidden="true"></span>
+      <span class="status-message">กำลังโหลดเสียงบรรยาย...</span>
+    </div>
     <!-- ส่วนหัวด้านบน expand_moreคือส่วนหนึ่งของfontgoogle ที่ดึงมาใช้ จะเป็น icon ต่างที่สามารถ -->
     <!-- <div class="top-bar">
       <span class="material-symbols-rounded">expand_more</span>
@@ -27,7 +31,7 @@
     <!-- แสดงรูป -->
     <div class="image-wrapper">
       <div class="music-image">
-        <img src="" alt="" class="rotate" ;>
+        <img src="" alt="ภาพประกอบเสียงบรรยาย" class="rotate">
       </div>
     </div>
 
@@ -39,7 +43,9 @@
       <!-- </div> -->
     </div>
     <!-- แถบหลอดเวลา -->
-    <div class="progress-details">
+    <div class="progress-details" role="slider" tabindex="0"
+      aria-label="ตำแหน่งการเล่น" aria-valuemin="0" aria-valuemax="100"
+      aria-valuenow="0" aria-valuetext="0:00 จาก 0:00">
       <div class="progress-bar">
         <span></span>
       </div>
@@ -50,11 +56,13 @@
     </div>
     <!-- ควบคุมการเล่น -->
     <div class="control-btn">
-      <span class="material-symbols-rounded" id="prev">skip_previous</span>
-      <div class="play-pause">
-        <span class="material-symbols-rounded">play_arrow</span>
-      </div>
-      <span class="material-symbols-rounded" id="next">skip_next</span>
+      <button type="button" class="player-control material-symbols-rounded" id="prev"
+        aria-label="เสียงบรรยายก่อนหน้า">skip_previous</button>
+      <button type="button" class="play-pause" aria-label="เล่นเสียงบรรยาย">
+        <span class="material-symbols-rounded" aria-hidden="true">play_arrow</span>
+      </button>
+      <button type="button" class="player-control material-symbols-rounded" id="next"
+        aria-label="เสียงบรรยายถัดไป">skip_next</button>
     </div>
     <!-- <div class="volune-datails">
       <div class="volune-bar">
@@ -81,11 +89,11 @@
   </main>
   <!-- เล่นเพลง -->
   
-  <audio src="" class="main-song"></audio>
+  <audio src="" class="main-song" preload="metadata"></audio>
   <!-- เพิ่ม jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <!-- ดึงข้อมูล -->
-  <script src="js/playlist.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/playlist.js?v=2"></script>
+  <script src="js/script.js?v=2"></script>
 </body>
 </html>
