@@ -1,11 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Content-Type: application/json; charset=utf-8');
-    http_response_code(401);
-    echo json_encode(["success" => false, "message" => "Unauthorized access"]);
-    exit; // หยุดการทำงานทันที
-}
+require_once __DIR__ . '/admin_auth.php';
+require_admin_auth();
 
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json; charset=utf-8");
