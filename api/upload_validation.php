@@ -116,14 +116,46 @@ function store_validated_upload($upload, $mediaType, $musicNumber)
         throw new UploadValidationException($e->getMessage(), $e->getStatusCode());
     }
 
-    if (!is_dir($directory) && !mkdir($directory, 0755, true)) {
-        throw new UploadValidationException('ไม่สามารถสร้างโฟลเดอร์อัปโหลดได้', 500);
+    $directoryCreated = false;
+    if (!is_dir($directory)) {
+        if (!mkdir($directory, 0755, true)) {
+            throw new UploadValidationException('ไม่สามารถสร้างโฟลเดอร์อัปโหลดได้', 500);
+        }
+        $directoryCreated = true;
     }
 
     $targetPath = rtrim($directory, '/\\') . DIRECTORY_SEPARATOR . $upload['filename'];
     if (!move_uploaded_file($upload['tmp_name'], $targetPath)) {
+        if ($directoryCreated && !rmdir($directory)) {
+            error_log('ไม่สามารถลบโฟลเดอร์อัปโหลดหลังบันทึกไฟล์ล้มเหลวได้: ' . $directory);
+        }
         throw new UploadValidationException('ไม่สามารถบันทึกไฟล์อัปโหลดได้', 500);
     }
 
     return $upload['filename'];
+}
+
+function remove_stored_upload($mediaType, $musicNumber, $filename)
+{
+    try {
+        $directory = media_directory_path($mediaType, $musicNumber, true);
+    } catch (MediaPathException $e) {
+        error_log('ไม่สามารถค้นหาไฟล์อัปโหลดเพื่อย้อนกลับได้: ' . $e->getMessage());
+        return;
+    }
+
+    $filePath = $directory . DIRECTORY_SEPARATOR . basename($filename);
+    if (is_file($filePath) && !unlink($filePath)) {
+        error_log('ไม่สามารถลบไฟล์อัปโหลดเพื่อย้อนกลับได้: ' . $filePath);
+    }
+
+    $files = scandir($directory);
+    if ($files === false) {
+        error_log('ไม่สามารถตรวจสอบโฟลเดอร์อัปโหลดเพื่อย้อนกลับได้: ' . $directory);
+        return;
+    }
+    $remainingFiles = array_diff($files, ['.', '..']);
+    if (count($remainingFiles) === 0 && !rmdir($directory)) {
+        error_log('ไม่สามารถลบโฟลเดอร์อัปโหลดที่ว่างได้: ' . $directory);
+    }
 }

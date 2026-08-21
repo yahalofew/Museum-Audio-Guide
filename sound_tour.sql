@@ -72,7 +72,8 @@ INSERT INTO `users_admin` (`id`, `username`, `password`) VALUES
 -- Indexes for table `music`
 --
 ALTER TABLE `music`
-  ADD PRIMARY KEY (`music_id`);
+  ADD PRIMARY KEY (`music_id`),
+  ADD UNIQUE KEY `uq_music_music_number` (`music_number`);
 
 --
 -- Indexes for table `users_admin`
