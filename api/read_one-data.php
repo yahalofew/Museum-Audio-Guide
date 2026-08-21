@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 
+require_once __DIR__ . '/media_integrity.php';
 include('../server_mysql.php');
 
 $music_number = isset($_GET['music_number']) ? $_GET['music_number'] : null;
@@ -21,7 +22,7 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $data = array();
     while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
+        $data[] = add_media_integrity_status($row);
     }
     $responseData = array(
         "result" => true,

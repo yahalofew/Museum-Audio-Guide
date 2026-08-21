@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 
+require_once __DIR__ . '/media_integrity.php';
+
 // ตรวจสอบ HTTP Method: API นี้ไว้สำหรับดึงข้อมูล ควรอนุญาตแค่ GET เท่านั้น
 if ($_SERVER["REQUEST_METHOD"] !== 'GET') {
     http_response_code(405);
@@ -30,7 +32,7 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $results = array();
     while ($row = $result->fetch_assoc()) {
-        $results[] = $row;
+        $results[] = add_media_integrity_status($row);
     }
     http_response_code(200);
     echo json_encode(array("success" => true, "data" => $results));

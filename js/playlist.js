@@ -18,6 +18,7 @@ function fetchData(callback) {
                 const musicNumber = Number(item.music_number);
                 return Number.isInteger(musicNumber)
                     && musicNumber >= 0
+                    && item.media_status !== 'missing'
                     && typeof item.music_name === 'string'
                     && typeof item.music_audio === 'string'
                     && item.music_audio.trim() !== ''

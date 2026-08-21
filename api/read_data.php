@@ -2,6 +2,7 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
+require_once __DIR__ . '/media_integrity.php';
 include('../server_mysql.php');
 
 $sql = "SELECT * FROM music";
@@ -14,7 +15,7 @@ if ($result === false) {
     if ($result->num_rows > 0) {
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+            $data[] = add_media_integrity_status($row);
         }
         echo json_encode($data);
     } else {
