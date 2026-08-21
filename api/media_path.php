@@ -105,6 +105,70 @@ function rename_media_directory($mediaType, $oldNumber, $newNumber)
     }
 }
 
+function media_file_path($mediaType, $musicNumber, $filename, $mustExist = true)
+{
+    $filename = is_scalar($filename) ? (string) $filename : '';
+    if ($filename === '' || basename($filename) !== $filename || preg_match('/[\\\\\/]/', $filename)) {
+        throw new MediaPathException('ชื่อไฟล์สื่อไม่ถูกต้อง');
+    }
+
+    $directory = media_directory_path($mediaType, $musicNumber, $mustExist);
+    $candidate = $directory . DIRECTORY_SEPARATOR . $filename;
+    if (is_link($candidate)) {
+        throw new MediaPathException('ไม่อนุญาตไฟล์สื่อที่เป็น symbolic link');
+    }
+
+    if (!file_exists($candidate)) {
+        if ($mustExist) {
+            throw new MediaPathException('ไม่พบไฟล์สื่อ');
+        }
+        return $candidate;
+    }
+
+    $resolved = realpath($candidate);
+    if ($resolved === false || !is_file($resolved) || !path_is_within_root($resolved, $directory)) {
+        throw new MediaPathException('เส้นทางไฟล์สื่อไม่ปลอดภัย');
+    }
+
+    return $resolved;
+}
+
+function delete_media_file($mediaType, $musicNumber, $filename)
+{
+    $filePath = media_file_path($mediaType, $musicNumber, $filename, true);
+    if (!unlink($filePath)) {
+        throw new MediaPathException('ไม่สามารถลบไฟล์สื่อได้', 500);
+    }
+}
+
+function stage_media_directory_for_deletion($mediaType, $musicNumber, $token)
+{
+    $originalPath = media_directory_path($mediaType, $musicNumber, true);
+    $root = media_root_path($mediaType);
+    $stagedPath = $root . DIRECTORY_SEPARATOR . '.delete-' . $musicNumber . '-' . $token;
+
+    if (!path_is_within_root($stagedPath, $root) || file_exists($stagedPath) || is_link($stagedPath)) {
+        throw new MediaPathException('ไม่สามารถเตรียมโฟลเดอร์สื่อสำหรับลบได้', 500);
+    }
+    if (!rename($originalPath, $stagedPath)) {
+        throw new MediaPathException('ไม่สามารถเตรียมโฟลเดอร์สื่อสำหรับลบได้', 500);
+    }
+
+    return ['original' => $originalPath, 'staged' => $stagedPath, 'root' => $root];
+}
+
+function restore_staged_media_directory($stagedDirectory)
+{
+    if (!rename($stagedDirectory['staged'], $stagedDirectory['original'])) {
+        throw new MediaPathException('ไม่สามารถคืนโฟลเดอร์สื่อได้', 500);
+    }
+}
+
+function delete_staged_media_directory($stagedDirectory)
+{
+    delete_directory_within_root($stagedDirectory['staged'], $stagedDirectory['root']);
+}
+
 function delete_media_directory($mediaType, $musicNumber)
 {
     $root = media_root_path($mediaType);
