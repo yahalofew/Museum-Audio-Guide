@@ -1,146 +1,137 @@
-# Museum Audio Guide 🏛️🎧
+# Museum Audio Guide
 
-ระบบเว็บแอปพลิเคชันนำชมพิพิธภัณฑ์ด้วยเสียง (Audio Guide) ผ่านการสแกน QR Code เพื่อเพิ่มประสบการณ์การเรียนรู้ที่ทันสมัยและสะดวกสบายให้กับผู้เข้าชม
+เว็บแอปพลิเคชันเสียงบรรยายสำหรับพิพิธภัณฑ์ ผู้เข้าชมสามารถเลือกหมายเลขวัตถุจัดแสดงจาก keypad หรือเปิดลิงก์จาก QR code เพื่อเข้าสู่รายการที่ต้องการโดยตรง ส่วนผู้ดูแลระบบสามารถจัดการข้อมูล รูปภาพ และไฟล์เสียงผ่านหน้า Admin
 
-> พัฒนาขึ้นเพื่อใช้งานจริง ณ **พิพิธภัณฑสถานธรรมชาติวิทยา 50 พรรษา สยามบรมราชกุมารี** ในช่วงฝึกงาน
+โปรเจกต์ใช้สถาปัตยกรรมเดิมแบบ HTML/CSS/JavaScript, procedural PHP, MySQL/MariaDB และ filesystem media เหมาะสำหรับติดตั้งแบบ same-origin บน XAMPP โดยไม่ต้องมี build step
 
----
+## Features
 
-## 🌟 จุดเด่นของโปรเจกต์
+### Visitor
 
-- **Responsive Design** — รองรับการใช้งานบนสมาร์ทโฟนและแท็บเล็ต เหมาะสำหรับผู้เข้าชมที่ใช้มือถือสแกน QR Code
-- **Dynamic Content** — ข้อมูลวัตถุจัดแสดงและไฟล์เสียงบรรยายดึงมาจากฐานข้อมูล ไม่ต้อง hard-code
-- **Admin Dashboard** — ระบบหลังบ้านสำหรับจัดการ (CRUD) ข้อมูลวัตถุจัดแสดง รูปภาพ และไฟล์เสียง
-- **Audio Playlist** — ระบบเล่นเสียงพร้อมฟีเจอร์กดหมายเลขเพื่อข้ามไปยังวัตถุที่ต้องการได้โดยตรง
-- **Secure Authentication** — ระบบล็อกอินด้วย session และ password hashing (bcrypt) สำหรับผู้ดูแลระบบ
+- Audio player พร้อม play/pause, previous/next, progress seek และ keyboard controls
+- Keypad สำหรับเลือก `music_number` โดยตรง
+- QR deep-link ผ่าน `index.html?music_number=...`
+- Loading, empty, invalid-data, missing-media และ playback-error states
+- Responsive layout สำหรับ desktop และ mobile
+- Accessible labels, focus states, touch targets และ reduced-motion support
 
----
+### Admin
 
-## 🚀 เทคโนโลยีที่ใช้
+- Session-based login และ logout
+- เพิ่ม แก้ไข ลบ และดูรายการเสียงบรรยาย
+- เพิ่มผู้ดูแลระบบพร้อม password hashing
+- ตรวจหมายเลขเสียงซ้ำทั้ง create/edit
+- ตรวจสถานะไฟล์เสียงและรูปภาพที่อ้างอิงจากฐานข้อมูล
+- Preview รูปภาพและไฟล์เสียงก่อน upload
+- Inline validation, submitting state, double-submit protection และ unsaved-changes warning
+- Responsive navigation และ form layout
 
-| ฝั่ง | เทคโนโลยี |
-|------|-----------|
-| Front-end | HTML5, CSS3, JavaScript (Vanilla JS & jQuery) |
-| Back-end | PHP (Native) |
-| Database | MySQL / MariaDB |
-| Tools | XAMPP, Git |
+## QR Deep Link
 
----
+นำ URL ของรายการไปสร้าง QR code ด้วยเครื่องมือที่ต้องการ เช่น:
 
-## 📂 โครงสร้างโปรเจกต์
-
+```text
+http://localhost/Museum-Audio-Guide/index.html?music_number=10
 ```
+
+เมื่อ `music_number` เป็นจำนวนเต็มบวกและมีรายการอยู่ ระบบจะโหลดรายการนั้นโดยอัตโนมัติโดยไม่บังคับ autoplay หากหมายเลขไม่พบหรือรูปแบบไม่ถูกต้อง ระบบจะแสดงข้อความผิดพลาดและยังเปิดให้ใช้ keypad เลือกรายการใหม่ได้ หน้า Visitor ที่ไม่มี query string ยังคงโหลดรายการแรกตามปกติ
+
+## Technology
+
+- Frontend: HTML5, CSS3, Vanilla JavaScript และ jQuery
+- Backend: Native PHP แบบ procedural
+- Database: MySQL/MariaDB ผ่าน MySQLi prepared statements
+- Media storage: โฟลเดอร์ `images/<music_number>/` และ `music/<music_number>/`
+- Runtime: Apache/PHP บน XAMPP
+
+## Architecture
+
+```text
 Museum-Audio-Guide/
-├── admin/              # หน้าจอ Admin Dashboard (Login, CRUD)
-├── api/                # PHP Backend — รับ-ส่งข้อมูล (REST-like API)
-├── js/                 # JavaScript สำหรับ Audio Player และ UI
-├── images/             # รูปภาพวัตถุจัดแสดง (แยกโฟลเดอร์ตามหมายเลข)
-├── music/              # ไฟล์เสียงบรรยาย .mp3 (แยกโฟลเดอร์ตามหมายเลข)
-├── index.html          # หน้าหลัก Audio Guide สำหรับผู้เข้าชม
-├── sound_tour.sql      # Database Schema + ข้อมูลตัวอย่าง
-└── server_mysql.php    # Database connection (ไม่อยู่ใน Git)
+├── admin/                 # Login, audio CRUD, admin management และ shared UI helpers
+├── api/                   # PHP endpoints, auth, validation และ integrity helpers
+├── database/migrations/   # Database migrations สำหรับฐานข้อมูลเดิม
+├── images/                # รูปภาพ แยกตาม music_number
+├── js/                    # Visitor data loading และ audio player
+├── music/                 # ไฟล์เสียง แยกตาม music_number
+├── index.html             # Visitor Audio Player
+├── sound_tour.sql         # Schema และข้อมูลเริ่มต้น
+├── server_mysql.example.php
+└── style.css
 ```
 
----
+Visitor เรียก public read endpoints ภายใต้ `api/` แบบ same-origin ส่วน endpoint ที่เปลี่ยนข้อมูลหรือจัดการผู้ดูแลจะตรวจ PHP session ผ่าน shared auth helper ก่อนทำงาน การเพิ่ม แก้ไข และลบ media ใช้ database transaction ร่วมกับ rollback/cleanup ฝั่ง filesystem เพื่อลดความไม่สอดคล้องระหว่างข้อมูลกับไฟล์
 
-## 🗄️ Database Schema
+## Data Model
 
-ฐานข้อมูลชื่อ `sound_tour` ประกอบด้วย 2 ตาราง:
+ฐานข้อมูลเริ่มต้นชื่อ `sound_tour` มีตารางหลักสองตาราง:
 
-**`music`** — เก็บข้อมูลวัตถุจัดแสดงและไฟล์มัลติมีเดีย
+- `music`: `music_id`, `music_number`, `music_name`, `music_audio`, `music_img`
+- `users_admin`: `id`, `username`, `password`
 
-| Column | Type | Description |
-|--------|------|-------------|
-| music_id | INT (PK) | รหัสอัตโนมัติ |
-| music_number | INT | หมายเลขวัตถุ (ใช้กดค้นหาบนหน้าจอ) |
-| music_name | VARCHAR | ชื่อวัตถุจัดแสดง |
-| music_audio | VARCHAR | ชื่อไฟล์เสียง .mp3 |
-| music_img | VARCHAR | ชื่อไฟล์รูปภาพ |
+`music_number` มี UNIQUE constraint และเป็นชื่อโฟลเดอร์ของ media แต่ละรายการ รหัสผ่านผู้ดูแลเก็บด้วย `password_hash()` และตรวจด้วย `password_verify()`
 
-**`users_admin`** — เก็บข้อมูลผู้ดูแลระบบ (password เก็บแบบ bcrypt hash)
+หากอัปเกรดฐานข้อมูลเก่าที่ไม่มี UNIQUE constraint ให้ตรวจ duplicate ก่อน แล้วจึงใช้ migration ใน `database/migrations/20260821_add_unique_music_number.sql` ฐานข้อมูลที่ import ใหม่จาก `sound_tour.sql` มี constraint นี้อยู่แล้ว
 
----
+## Security
 
-## 🛠️ วิธีติดตั้งและรันโปรเจกต์
+- Protected write endpoints ใช้ shared PHP session authentication
+- Login regenerate session ID; cookie ใช้ `HttpOnly`, `SameSite=Lax` และ `Secure` เมื่อทำงานผ่าน HTTPS
+- Logout ล้าง session data, session cookie และทำลาย session
+- SQL ที่รับ input ใช้ prepared statements
+- Upload ตรวจ upload error, MIME type, extension, file size และสร้าง filename ที่ปลอดภัย
+- Audio รองรับ MP3, WAV, OGG, M4A, AAC และ FLAC ขนาดสูงสุด 30 MB
+- Image รองรับ JPG/JPEG, PNG, GIF และ WebP ขนาดสูงสุด 10 MB
+- Media path จำกัดให้อยู่ภายใน `images/` และ `music/` พร้อมป้องกัน path traversal และ symbolic-link escape
+- API ใช้ same-origin และไม่เปิด wildcard CORS
+- API read responses ระบุ missing media เพื่อให้ Visitor/Admin จัดการได้อย่างปลอดภัย
 
-**ความต้องการของระบบ:** XAMPP (PHP 8.0+, MariaDB 10.4+)
+มาตรการเหล่านี้เป็น defense in depth สำหรับแอปพลิเคชันปัจจุบัน การนำขึ้น production ควรใช้ HTTPS, จำกัดสิทธิ์ filesystem, ปิด display errors และไม่เปิด utility สำหรับ bootstrap ผู้ดูแลให้เข้าถึงจากภายนอก
 
-**1. Clone โปรเจกต์**
-```bash
-git clone https://github.com/YOUR_USERNAME/Museum-Audio-Guide.git
-```
+## Setup
 
-**2. วางโฟลเดอร์ใน htdocs**
-```
-C:/xampp/htdocs/PROJECT/
-```
+### Requirements
 
-**3. Import ฐานข้อมูล**
-- เปิด phpMyAdmin แล้วสร้างฐานข้อมูลชื่อ `sound_tour`
-- Import ไฟล์ `sound_tour.sql`
+- XAMPP ที่มี Apache, PHP 8.0+ และ MySQL/MariaDB
+- PHP extensions: MySQLi และ Fileinfo
 
-**4. ตั้งค่าการเชื่อมต่อฐานข้อมูล**
-- คัดลอก `server_mysql.example.php` → เปลี่ยนชื่อเป็น `server_mysql.php`
-- แก้ไขค่า Host, Username, Password ให้ตรงกับเครื่องของคุณ
+### Installation
 
-**5. เปิดเบราว์เซอร์**
-```
-http://localhost/PROJECT/index.html
-```
+1. Clone repository ลงใต้ XAMPP `htdocs`:
 
----
+   ```bash
+   git clone https://github.com/yahalofew/Museum-Audio-Guide.git
+   ```
 
-## 🔑 การเข้าใช้งาน Admin
+2. เปิด Apache และ MySQL จาก XAMPP Control Panel
 
-```
-URL: http://localhost/PROJECT/admin/admin.html
-```
-- Username: `admin`
-- Password: `admin123`
-  
-> ⚠️ Credentials นี้สำหรับ local development เท่านั้น  
-> หากนำไปใช้งานจริงให้เปลี่ยน password ทันที
+3. Import `sound_tour.sql` ผ่าน phpMyAdmin หรือ MySQL client
 
----
+4. สร้าง `server_mysql.php` จาก `server_mysql.example.php` และใส่ค่าการเชื่อมต่อของ environment นั้น:
 
-## ⚠️ Known Limitations
+   ```text
+   server_mysql.example.php -> server_mysql.php
+   ```
 
-สิ่งที่รับรู้และจะปรับปรุงหากพัฒนาต่อ:
+   `server_mysql.php` ต้องไม่ถูก commit และไม่ควรใส่ credentials จริงในไฟล์ documentation หรือไฟล์ตัวอย่างที่ track ด้วย Git
 
-- **ไม่มี input validation สำหรับ file upload** — ควรตรวจสอบ MIME type และขนาดไฟล์ฝั่ง server
-- **ชื่อไฟล์ภาษาไทย** — ไฟล์มัลติมีเดียบางส่วนใช้ภาษาไทยตามข้อกำหนดเดิมขององค์กร เพื่อให้สอดคล้องกับฐานข้อมูลที่มีอยู่
+5. ตรวจให้ Apache สามารถเขียนโฟลเดอร์ `images/` และ `music/` ได้
 
----
+6. สร้างหรือเปลี่ยนบัญชีผู้ดูแลเริ่มต้นด้วยรหัสผ่านเฉพาะของ environment โดยเก็บเฉพาะค่าที่สร้างจาก PHP `password_hash()` ห้ามใช้บัญชีตัวอย่างร่วมกันใน production
 
-## 💡 สิ่งที่จะพัฒนาต่อ
+7. เปิดหน้า Visitor และ Admin:
 
-- [ ] รองรับหลายภาษา (ไทย / อังกฤษ)
-- [ ] เพิ่มระบบ Zone/Category สำหรับจัดกลุ่มวัตถุจัดแสดง
-- [ ] ย้าย API ไปใช้ framework เช่น Laravel หรือ Slim สำหรับ scalability
+   ```text
+   http://localhost/Museum-Audio-Guide/index.html
+   http://localhost/Museum-Audio-Guide/admin/admin.html
+   ```
 
----
+ปรับชื่อ path ใน URL ให้ตรงกับชื่อโฟลเดอร์ที่ clone ไว้ใต้ `htdocs`
 
-## 📝 หมายเหตุ
+## Project Status
 
-- โปรเจกต์ใช้ `.gitignore` เพื่อป้องกันไม่ให้ไฟล์ `server_mysql.php` และ `.env` ที่มีข้อมูลจริงถูก commit ขึ้น repository
+ระบบหลักพร้อมสำหรับการพัฒนาและทดสอบต่อบน XAMPP: Visitor player, QR deep-link, Admin CRUD, authentication, upload/path validation, media integrity และ responsive UI ถูกเชื่อมเข้ากับ flow ปัจจุบันแล้ว โปรเจกต์ยังคงใช้ native PHP และไม่มี dependency manager หรือ automated test suite ดังนั้นควรรัน syntax checks และทดสอบ flow ผ่าน localhost ทุกครั้งที่แก้ไข
 
-## 📸 Screenshots
-**หน้าหลัก (Audio Player)**
+## License
 
-<img width="520" alt="audio player" src="https://github.com/user-attachments/assets/fce0a216-be77-4108-9e7b-a96b23fb0fc0" />
-
-**กำลังเล่นเสียง**
-
-<img width="520" alt="play sound" src="https://github.com/user-attachments/assets/337301fd-1fbe-4f19-9dd8-6be776a58231" />
-
-**Admin — รายการทั้งหมด**
-
-<img width="800" alt="Admin viewall" src="https://github.com/user-attachments/assets/d35178ab-9554-4bc8-b9f0-07aa74277cc3" />
-
-**Admin — เพิ่มเสียงใหม่**
-
-<img width="800" alt="Admin add sound" src="https://github.com/user-attachments/assets/3f763124-1221-4664-81e8-f68aade921f6" />
-
-
-
-
+ดูเงื่อนไขการใช้งานใน [LICENSE](LICENSE)
