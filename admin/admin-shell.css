@@ -1,0 +1,281 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.admin-layout {
+    display: grid !important;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 20px !important;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.admin-layout .sidebar {
+    position: sticky !important;
+    top: 0;
+    width: 280px !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 15px 15px 0 !important;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.admin-layout .sidebar nav {
+    padding: 16px !important;
+}
+
+.admin-layout .sidebar .logo {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.admin-layout .sidebar .logo img {
+    display: block;
+    width: 100% !important;
+    height: 130px !important;
+    object-fit: contain;
+}
+
+.admin-layout .menu_list {
+    width: 100%;
+}
+
+.admin-layout .menu-item {
+    display: flex !important;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 12px !important;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.admin-layout .menu_list i {
+    flex: 0 0 24px;
+    width: 24px !important;
+    margin: 0 14px 0 0 !important;
+    text-align: center;
+}
+
+.admin-layout .menu-item.active,
+.admin-layout .menu-item[aria-current="page"] {
+    background: #e7e7f8;
+    color: #29245c;
+    border-radius: 8px;
+}
+
+.admin-layout > .main-content {
+    width: auto !important;
+    min-width: 0;
+    margin: 20px 20px 20px 0 !important;
+}
+
+.admin-layout:not(.admin-edit-layout) > .main-content {
+    grid-column: 2;
+}
+
+.admin-edit-layout {
+    grid-template-columns: 280px minmax(320px, 380px) minmax(0, 1fr);
+}
+
+.admin-edit-layout > .content,
+.admin-edit-layout > .main-content {
+    min-width: 0;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.admin-edit-layout > .content {
+    width: auto;
+    margin-left: 0 !important;
+}
+
+.admin-edit-layout > .main-content {
+    margin-left: 0 !important;
+}
+
+.admin-edit-layout .music-image {
+    width: min(300px, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 1;
+}
+
+.admin-edit-layout .image-wrapper {
+    padding: 24px !important;
+}
+
+.admin-edit-layout audio {
+    width: min(300px, calc(100% - 32px));
+    margin-bottom: 24px;
+}
+
+.admin-edit-layout #editMusicForm,
+.admin-layout #musicForm {
+    width: min(100%, 560px) !important;
+    max-width: 100%;
+}
+
+.admin-layout input[type="text"],
+.admin-layout input[type="password"],
+.admin-layout input[type="file"] {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+.admin-layout .dataTables_wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.admin-layout table.dataTable {
+    min-width: 760px;
+}
+
+@media (max-width: 1024px) {
+    .admin-layout,
+    .admin-edit-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 16px !important;
+    }
+
+    .admin-layout .sidebar {
+        position: static !important;
+        grid-column: 1 / -1;
+        width: 100% !important;
+        height: auto !important;
+        border-radius: 0 0 15px 15px !important;
+        overflow: visible;
+    }
+
+    .admin-layout .sidebar nav {
+        display: grid;
+        grid-template-columns: 180px minmax(210px, 1fr) minmax(180px, 0.8fr) minmax(150px, 0.7fr);
+        align-items: start;
+        gap: 12px;
+    }
+
+    .admin-layout .sidebar .logo img {
+        height: 104px !important;
+    }
+
+    .admin-layout .menu_list {
+        margin-top: 0 !important;
+        min-height: 104px;
+    }
+
+    .admin-layout > .main-content,
+    .admin-layout:not(.admin-edit-layout) > .main-content,
+    .admin-edit-layout > .content {
+        grid-column: 1;
+        width: auto !important;
+        margin: 0 16px 16px !important;
+    }
+
+    .admin-edit-layout {
+        grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr) !important;
+    }
+
+    .admin-edit-layout .sidebar {
+        grid-column: 1 / -1;
+    }
+
+    .admin-edit-layout > .content {
+        grid-column: 1;
+        margin-right: 0 !important;
+    }
+
+    .admin-edit-layout > .main-content {
+        grid-column: 2;
+        margin-left: 0 !important;
+    }
+}
+
+@media (max-width: 700px) {
+    .admin-edit-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .admin-layout .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px !important;
+    }
+
+    .admin-layout .sidebar .logo {
+        justify-content: center;
+        background: #fff;
+    }
+
+    .admin-layout .sidebar .logo img {
+        width: min(100%, 280px) !important;
+        height: 96px !important;
+    }
+
+    .admin-layout .menu_list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-height: 0;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .admin-layout .menu_list span {
+        grid-column: 1 / -1;
+    }
+
+    .admin-layout .menu_list:last-child {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-layout .menu-item {
+        font-size: 14px;
+    }
+
+    .admin-layout > .main-content,
+    .admin-layout:not(.admin-edit-layout) > .main-content,
+    .admin-edit-layout > .content,
+    .admin-edit-layout > .main-content {
+        grid-column: 1;
+        margin: 0 12px 12px !important;
+        padding: 20px 16px !important;
+    }
+
+    .admin-layout .main-content h1 {
+        margin-top: 8px !important;
+        font-size: 26px;
+    }
+
+    .admin-layout #musicForm,
+    .admin-edit-layout #editMusicForm {
+        margin: 0 !important;
+        padding: 12px 0 !important;
+    }
+
+    .admin-edit-layout .image-wrapper {
+        padding: 8px !important;
+    }
+
+    .admin-edit-layout .music-image {
+        width: min(260px, 100%) !important;
+        margin: 0 auto;
+    }
+
+    .admin-layout .form-wrapper {
+        padding: 24px 18px;
+    }
+
+    .admin-layout .button-group {
+        flex-direction: column;
+    }
+}
