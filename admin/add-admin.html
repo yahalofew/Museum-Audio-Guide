@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Add Admin</title>
+        <title>เพิ่มผู้ดูแลระบบ</title>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/f5376a0119.js"
             crossorigin="anonymous"></script>
         <link rel="stylesheet" href="add-admin.css">
-        <link rel="stylesheet" href="admin-shell.css">
+        <link rel="stylesheet" href="admin-shell.css?v=3">
         <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     </head>
     <body>
@@ -16,7 +16,7 @@
             <div class="sidebar">
                 <nav>
                     <div class="logo">
-                        <img src="../logo_MUSEUM.png" alt="">
+                        <img src="../logo_MUSEUM.png" alt="โลโก้ Museum Audio Guide">
                     </div>
                     <div class="menu_list">
                         <span>รายการ</span>
@@ -47,9 +47,9 @@
                         <h1>เพิ่มผู้ดูแลระบบ</h1>
                         <form id="addAdminForm" method="post" novalidate>
                             <div class="input-group">
-                                <label for="username">Username:</label>
+                                <label for="username">ชื่อผู้ใช้</label>
                                 <input type="text" id="username" name="username"
-                                    required
+                                    required autocomplete="username"
                                     placeholder="กรอกชื่อผู้ใช้ (4-32 ตัวอักษร)"
                                     minlength="4" maxlength="32"
                                     pattern="[a-zA-Z0-9_]+">
@@ -57,18 +57,18 @@
                             </div>
 
                             <div class="input-group">
-                                <label for="password">Password:</label>
+                                <label for="password">รหัสผ่าน</label>
                                 <input type="password" id="password" name="password"
                                     required
                                     placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
-                                    minlength="6">
+                                    minlength="6" autocomplete="new-password">
                             </div>
 
                             <div class="input-group">
-                                <label for="confirmPassword">ยันยัน Password:</label>
+                                <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
                                 <input type="password" id="confirmPassword"
                                     name="confirmPassword" required
-                                    placeholder="กรอกรหัสผ่านอีกครั้ง">
+                                    placeholder="กรอกรหัสผ่านอีกครั้ง" autocomplete="new-password">
                             </div>
 
                             <div class="button-group">

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>เพิ่มเสียง</title>
         <link rel="stylesheet" href="dashboard.css">
-        <link rel="stylesheet" href="admin-shell.css">
+        <link rel="stylesheet" href="admin-shell.css?v=3">
         <script src="https://kit.fontawesome.com/f5376a0119.js"
             crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -16,7 +16,7 @@
             <div class="sidebar">
                 <nav>
                     <div class="logo">
-                        <img src="../logo_MUSEUM.png" alt ;>
+                        <img src="../logo_MUSEUM.png" alt="โลโก้ Museum Audio Guide">
                         <!-- <span>จัดการเสียง</span> -->
                     </div>
                     <div class="menu_list">
@@ -47,23 +47,23 @@
                 <form id="musicForm" method="post" novalidate
                     enctype="multipart/form-data">
                     <div>
-                        <label for="songNumber">หมายเลขเสียง :</label>
+                        <label for="songNumber">หมายเลขเสียงบรรยาย</label>
                         <input type="text" id="songNumber" name="songNumber"
                             inputmode="numeric" pattern="[0-9]*"
                             title="โปรดป้อนเฉพาะตัวเลขเท่านั้น" required>
                     </div>
                     <div>
-                        <label for="songTitle">ชื่อเสียง :</label>
+                        <label for="songTitle">ชื่อเสียงบรรยาย</label>
                         <input type="text" id="songTitle" name="songTitle"
                             title="โปรดระบุข้อมูลให้ครบ" required>
                     </div>
                     <div>
-                        <label for="songFile">ไฟล์เสียง :</label>
+                        <label for="songFile">ไฟล์เสียง</label>
                         <input type="file" id="songFile" name="songFile"
                             accept="audio/*" required>
                     </div>
                     <div>
-                        <label for="songImage">รูปภาพประกอบ :</label>
+                        <label for="songImage">รูปภาพประกอบ</label>
                         <input type="file" id="songImage" name="songImage"
                             accept="image/*" required>
                     </div>

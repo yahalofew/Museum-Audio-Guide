@@ -1,11 +1,45 @@
+:root {
+    --admin-primary: #29245c;
+    --admin-primary-hover: #403982;
+    --admin-text: #292936;
+    --admin-border: #c9c9d5;
+    --admin-focus: #1e5aa8;
+    --admin-danger: #b42318;
+}
+
 * {
     box-sizing: border-box;
+    letter-spacing: 0;
 }
 
 html,
 body {
     max-width: 100%;
     overflow-x: hidden;
+    color: var(--admin-text);
+    font-family: 'Kanit', sans-serif;
+    line-height: 1.5;
+}
+
+.admin-layout button,
+.admin-layout input,
+.admin-layout select,
+.admin-layout textarea {
+    font: inherit;
+}
+
+.admin-layout h1 {
+    color: var(--admin-primary);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.admin-layout label {
+    color: var(--admin-text);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
 }
 
 .admin-layout {
@@ -56,6 +90,17 @@ body {
     padding: 10px 12px !important;
     line-height: 1.35;
     white-space: normal;
+    color: var(--admin-text);
+    text-decoration: none;
+}
+
+.admin-layout a:focus-visible,
+.admin-layout button:focus-visible,
+.admin-layout input:focus-visible,
+.admin-layout select:focus-visible,
+.admin-layout textarea:focus-visible {
+    outline: 3px solid var(--admin-focus) !important;
+    outline-offset: 2px;
 }
 
 .admin-layout .menu_list i {
@@ -130,16 +175,87 @@ body {
     max-width: 100%;
 }
 
+.admin-layout input[type="text"],
+.admin-layout input[type="password"],
+.admin-layout input[type="file"] {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    color: var(--admin-text);
+    background: #fff;
+}
+
+.admin-layout input[type="file"] {
+    padding: 7px 10px;
+}
+
+.admin-layout button,
+.admin-layout .btn-primary,
+.admin-layout .btn-secondary,
+.admin-layout .add-audio-link,
+.admin-layout .retry-button,
+.admin-layout .action-button {
+    min-height: 44px;
+}
+
+.admin-layout .dataTables_filter input,
+.admin-layout .dataTables_length select {
+    min-height: 44px;
+    padding: 8px 10px;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
+    color: var(--admin-text);
+    background: #fff;
+}
+
+.admin-layout .dataTables_paginate .paginate_button {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-layout button[type="submit"],
+.admin-layout .btn-primary {
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 6px;
+    color: #fff;
+    background: var(--admin-primary);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-layout button[type="submit"]:hover,
+.admin-layout .btn-primary:hover {
+    color: #fff;
+    background: var(--admin-primary-hover);
+    transform: none;
+}
+
+.admin-layout .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    border-radius: 6px;
+    color: var(--admin-text);
+    background: #ededf3;
+}
+
 .admin-layout .field-error {
     display: block;
     margin-top: 6px;
-    color: #b42318;
+    color: var(--admin-danger);
     font-size: 14px;
     line-height: 1.4;
 }
 
 .admin-layout [aria-invalid="true"] {
-    border-color: #b42318 !important;
+    border-color: var(--admin-danger) !important;
     box-shadow: 0 0 0 2px rgba(180, 35, 24, 0.12);
 }
 
@@ -296,5 +412,14 @@ body {
 
     .admin-layout .button-group {
         flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-layout *,
+    .admin-layout *::before,
+    .admin-layout *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
     }
 }

@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 document.getElementById("SongTitle").value = songTitle;
                 document.getElementById("songNumber").value = songNumber;
                 img.src = "../images/" + songNumber + "/" + songImage;
+                img.alt = "ภาพประกอบ " + songTitle;
                 // กำหนดค่า src ให้กับแท็ก audio
                 document.getElementById('myAudio').querySelector('source').src = "../music/" + songNumber + "/" + songAudio;
                 // โหลดเสียงใหม่

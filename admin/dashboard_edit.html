@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>แก้ไขข้อมูล</title>
     <link rel="stylesheet" href="dashboard_edit.css">
-    <link rel="stylesheet" href="admin-shell.css">
+    <link rel="stylesheet" href="admin-shell.css?v=3">
     <script src="https://kit.fontawesome.com/f5376a0119.js"
       crossorigin="anonymous"></script>
 
@@ -26,7 +26,7 @@
       <div class="sidebar">
         <nav>
           <div class="logo">
-            <img src="../logo_MUSEUM.png" alt ;>
+            <img src="../logo_MUSEUM.png" alt="โลโก้ Museum Audio Guide">
             <!-- <span>จัดการเสียง</span> -->
           </div>
           <div class="menu_list">
@@ -52,7 +52,7 @@
       <div class="content">
         <div class="image-wrapper">
           <div class="music-image">
-            <img src id="imgElement" alt ;>
+            <img src id="imgElement" alt="ภาพประกอบเสียงบรรยาย">
           </div>
         </div>
         <div class="control-btn">
@@ -64,23 +64,23 @@
       </div>
       <div class="main-content">
         <form id="editMusicForm" method="post" enctype="multipart/form-data" novalidate>
-          <h1>Edit Music</h1>
+          <h1>แก้ไขเสียงบรรยาย</h1>
           <div>
-            <label for="songNumber">หมายเลขเพลง:</label>
+            <label for="songNumber">หมายเลขเสียงบรรยาย</label>
             <input type="text" id="songNumber" name="songNumber"
               inputmode="numeric" pattern="[0-9]*"
               title="โปรดป้อนเฉพาะตัวเลขเท่านั้น">
           </div>
           <div>
-            <label for="SongTitle">ชื่อเพลง:</label>
+            <label for="SongTitle">ชื่อเสียงบรรยาย</label>
             <input type="text" id="SongTitle" name="editSongTitle">
           </div>
           <div>
-            <label for="songFile">ไฟล์เสียง:</label>
+            <label for="songFile">ไฟล์เสียง</label>
             <input type="file" id="songFile" name="songFile" accept="audio/*">
           </div>
           <div>
-            <label for="songImage">รูปภาพประกอบ:</label>
+            <label for="songImage">รูปภาพประกอบ</label>
             <input type="file" id="songImage" name="songImage" accept="image/*">
           </div>
           <button type="submit">บันทึกการแก้ไข</button>
@@ -92,7 +92,7 @@
     <!-- <audio src="music/1/music1.mp3" class="main-song" id="audioElement"></audio> -->
 
     <script src="admin-form-feedback.js?v=1"></script>
-    <script src="dashboard_edit.js?v=2"></script>
+    <script src="dashboard_edit.js?v=3"></script>
 
   </body>
 
