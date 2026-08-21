@@ -65,7 +65,29 @@ function loadInitialTrack() {
       handleDataError(error);
       return;
     }
-    loadTrack(sortedTracks(data)[0], false);
+
+    const requestedNumber = new URLSearchParams(window.location.search).get('music_number');
+    if (requestedNumber === null) {
+      loadTrack(sortedTracks(data)[0], false);
+      return;
+    }
+
+    if (!/^[1-9][0-9]*$/.test(requestedNumber)) {
+      resetPlayback();
+      displayNumber.textContent = 'หมายเลขเสียงบรรยายไม่ถูกต้อง';
+      setPlayerState('error', 'ลิงก์เสียงบรรยายไม่ถูกต้อง กรุณากรอกหมายเลขใหม่');
+      return;
+    }
+
+    const requestedTrack = data.find((track) => String(track.music_number) === requestedNumber);
+    if (!requestedTrack) {
+      resetPlayback();
+      displayNumber.textContent = `ไม่พบเสียงบรรยายหมายเลข ${requestedNumber}`;
+      setPlayerState('error', `ไม่พบเสียงบรรยายหมายเลข ${requestedNumber} กรุณากรอกหมายเลขใหม่`);
+      return;
+    }
+
+    loadTrack(requestedTrack, false);
   });
 }
 
