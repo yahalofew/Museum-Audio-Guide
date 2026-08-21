@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once __DIR__ . '/admin_session.php';
+start_admin_session();
 
 // Security Headers
 header("Access-Control-Allow-Origin: *");
@@ -60,12 +61,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             // ตรวจสอบรหัสผ่านที่ส่งมาเทียบกับรหัสผ่านที่เก็บในฐานข้อมูล (ซึ่งควรจะถูกแฮชไว้)
             if (password_verify($password, $user["password"])) {
                 // รหัสผ่านถูกต้อง ให้สร้างเซสชันสำหรับผู้ดูแลระบบ
+                session_regenerate_id(true);
+
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_id'] = $user['id'] ?? null;
                 $_SESSION['admin_username'] = $user['username'] ?? '';
-
-                // Regenerate session ID for security
-                session_regenerate_id(true);
 
                 $stmt->close();
                 $conn->close();
