@@ -1,4 +1,7 @@
 
+(function () {
+'use strict';
+
 function classifyMusicData(data) {
     if (!Array.isArray(data)) {
         return { error: new Error('Invalid music data response'), data: null };
@@ -46,3 +49,6 @@ function fetchData(callback) {
         }
     });
 }
+
+window.MuseumPlaylist = Object.freeze({ fetchData });
+}());

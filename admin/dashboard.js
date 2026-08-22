@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 const musicForm = document.getElementById('musicForm');
 const feedback = window.AdminFormFeedback;
 
@@ -54,3 +57,5 @@ musicForm.addEventListener('submit', async (event) => {
         feedback.setSubmitting(musicForm, false, 'กำลังบันทึก...');
     }
 });
+
+}());

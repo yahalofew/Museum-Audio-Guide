@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 $(document).ready(function () {
     const listState = document.getElementById('listState');
     const stateTitle = listState.querySelector('.state-title');
@@ -253,3 +256,5 @@ async function deleteSound(songNumber) {
         return { success: false, message: 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ กรุณาลองใหม่' };
     }
 }
+
+}());

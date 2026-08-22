@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
     if (!loginForm) {
@@ -77,5 +80,7 @@ const login = async (username, password) => {
         throw error;
     }
 };
+
+}());
 
 

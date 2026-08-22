@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 document.querySelectorAll('[data-password-target]').forEach((button) => {
     const input = document.getElementById(button.dataset.passwordTarget);
     if (!input) return;
@@ -20,3 +23,5 @@ document.querySelectorAll('[data-password-target]').forEach((button) => {
         setTimeout(() => setVisibility(false), 0);
     });
 });
+
+}());

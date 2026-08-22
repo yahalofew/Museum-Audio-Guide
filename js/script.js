@@ -1,3 +1,7 @@
+(function () {
+'use strict';
+
+const { fetchData } = window.MuseumPlaylist;
 const content = document.querySelector('.content');
 const playImage = content.querySelector('.music-image img');
 const musicName = content.querySelector('.music-titles .name');
@@ -302,3 +306,5 @@ function clearNumberEntry() {
   currentNumber = '';
   displayNumber.innerHTML = '&nbsp;';
 }
+
+}());

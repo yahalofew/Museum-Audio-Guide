@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 document.querySelectorAll('input[type="file"][data-preview-target]').forEach((input) => {
     const preview = document.getElementById(input.dataset.previewTarget);
     if (!preview) return;
@@ -28,3 +31,5 @@ document.querySelectorAll('input[type="file"][data-preview-target]').forEach((in
         if (objectUrl) URL.revokeObjectURL(objectUrl);
     });
 });
+
+}());

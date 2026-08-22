@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 const img = document.querySelector(".music-image img");
 const feedback = window.AdminFormFeedback;
 // const audio = document.querySelector(".control-btn audio");
@@ -78,6 +81,13 @@ window.addEventListener("beforeunload", (event) => {
     event.returnValue = '';
 });
 
+async function completeSuccessfulEdit() {
+    console.log("แก้ไขข้อมูลสำเร็จ");
+    await feedback.success('แก้ไขข้อมูลสำเร็จ');
+    hasUnsavedChanges = false;
+    window.location = "./viewall.html";
+}
+
 EditMusicForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (EditMusicForm.dataset.submitting === 'true') return;
@@ -147,10 +157,7 @@ EditMusicForm.addEventListener("submit", async (event) => {
 
             const res = await updateImg(formData, musics, songImageInput);
             if (res) {
-                console.log("แก้ไขข้อมูลสำเร็จ");
-                await feedback.success('แก้ไขข้อมูลสำเร็จ');
-                hasUnsavedChanges = false;
-                window.location = "./viewall.html";
+                await completeSuccessfulEdit();
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");
                 await feedback.error('อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ');
@@ -200,10 +207,7 @@ EditMusicForm.addEventListener("submit", async (event) => {
             const res = await updateImg(formData, musics, songImageInput);
 
             if (res) {
-                console.log("แก้ไขข้อมูลสำเร็จ");
-                await feedback.success('แก้ไขข้อมูลสำเร็จ');
-                hasUnsavedChanges = false;
-                window.location = "./viewall.html";
+                await completeSuccessfulEdit();
             } else {
                 console.log("อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ");
                 await feedback.error('อัพเดตข้อมูลในฐานข้อมูลไม่สำเร็จ');
@@ -343,3 +347,5 @@ async function updateImg(formData, musics, songImageInput) {
         }
     }
 }
+
+}());
